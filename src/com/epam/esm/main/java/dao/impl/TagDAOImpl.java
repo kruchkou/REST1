@@ -14,12 +14,12 @@ public class TagDAOImpl implements TagDAO {
 
     public TagDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
     @Override
     public void create(Tag tag) {
-
     }
 
     @Override

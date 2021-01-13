@@ -7,9 +7,11 @@ import java.util.List;
 
 public interface GiftCertificateDAO {
 
-    public void create(String name, String description, int price, int duration);
+    public int delete(int id);
 
-    public void delete(int id);
+    public int update(GiftCertificate updatedCertificate);
+
+    public GiftCertificate create(String name, String description, int price, int duration);
 
     public GiftCertificate getCertificateByID(int id);
 
@@ -17,6 +19,6 @@ public interface GiftCertificateDAO {
 
     public List<GiftCertificate> getCertificatesByTagName(String tagName);
 
-    public List<GiftCertificate> getCertificatesByNameOrDescription(String name);
+    public List<GiftCertificate> getCertificatesByNameOrDescription(String searchText);
 
 }

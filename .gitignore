@@ -3,3 +3,4 @@
 /lib/
 /out/
 /.idea/
+/src/com/epam/esm/main/resources/applicationContext.xml

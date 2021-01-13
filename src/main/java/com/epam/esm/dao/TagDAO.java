@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface TagDAO {
 
-    public void create(Tag tag);
+    public void create(String name);
 
-    public void remove(Tag tag);
+    public void delete(int id);
 
     public Tag getTagByID(int id);
 

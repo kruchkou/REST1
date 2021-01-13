@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--THIS FILE IS FOR TEST. MAIN IN WEB-INF -->
+
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value = "com.mysql.cj.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://185.135.80.244:3306/gifts"/>
+        <property name="username" value="baker"/>
+        <property name="password" value="BazaBaker1"/>
+        <property name="initialSize" value = "10" />
+    </bean>
+
+    <bean id="giftCertificateDAO"
+          class="dao.impl.GiftCertificateDAOImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="tagDAO"
+          class="dao.impl.TagDAOImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+</beans>

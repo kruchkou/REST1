@@ -1,19 +1,19 @@
-package dao;
+package com.epam.esm.dao;
 
-import bean.GiftCertificate;
-import bean.Tag;
+import com.epam.esm.entity.GiftCertificate;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GiftCertificateDAO {
 
-    public int delete(int id);
+    public int deleteCertificate(int id);
 
-    public int update(GiftCertificate updatedCertificate);
+    public int updateCertificate(GiftCertificate updatedCertificate);
 
-    public GiftCertificate create(String name, String description, int price, int duration);
+    public GiftCertificate createGiftCertificate(String name, String description, int price, int duration);
 
-    public GiftCertificate getCertificateByID(int id);
+    public Optional<GiftCertificate> getCertificateByID(int id);
 
     public List<GiftCertificate> getCertificates();
 

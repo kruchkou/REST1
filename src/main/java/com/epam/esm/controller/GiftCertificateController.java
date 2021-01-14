@@ -1,12 +1,14 @@
-package controller;
+package com.epam.esm.controller;
 
-import bean.GiftCertificate;
-import dao.GiftCertificateDAO;
+import com.epam.esm.dto.GiftCertificateDTO;
+import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.dao.GiftCertificateDAO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("giftCertificates")
 public class GiftCertificateController {
 
     private final GiftCertificateDAO giftCertificateDAO;
@@ -15,30 +17,32 @@ public class GiftCertificateController {
         this.giftCertificateDAO = giftCertificateDAO;
     }
 
-    @GetMapping("/giftCertificates")
+    @GetMapping
     List<GiftCertificate> getCertificates() {
         return giftCertificateDAO.getCertificates();
     }
 
-    @PostMapping("/giftCertificates")
-    GiftCertificate newGiftCertificate(@RequestBody GiftCertificate giftCertificate) {
-        return giftCertificateDAO.create(giftCertificate.getName(),giftCertificate.getDescription(),giftCertificate.getPrice(),giftCertificate.getDuration());
+    @PostMapping
+    GiftCertificate newGiftCertificate(@RequestBody GiftCertificateDTO giftCertificate) {
+        System.out.println(giftCertificate);
+        return giftCertificateDAO.createGiftCertificate(giftCertificate.getName(),giftCertificate.getDescription(),giftCertificate.getPrice(),giftCertificate.getDuration());
+        //return giftCertificateDAO.getCertificatesByTagName(giftCertificate.getTagNames().get(0)).get(0);
     }
 
-    @GetMapping("/giftCertificates/{id}")
+    @GetMapping("/{id}")
     GiftCertificate getGiftCertificateByID(@PathVariable int id) {
         return giftCertificateDAO.getCertificateByID(id);
     }
 
-    @PutMapping("/giftCertificates/{id}")
+    @PutMapping("/{id}")
     GiftCertificate replaceEmployee(@RequestBody GiftCertificate newGift, @PathVariable int id) {
-        giftCertificateDAO.update(newGift);
+        giftCertificateDAO.updateCertificate(newGift);
         return getGiftCertificateByID(newGift.getId());
     }
 
-    @DeleteMapping("/giftCertificates/{id}")
+    @DeleteMapping("/{id}")
     void deleteEmployee(@PathVariable int id) {
-        giftCertificateDAO.delete(id);
+        giftCertificateDAO.deleteCertificate(id);
     }
 
 }

@@ -1,6 +1,6 @@
-package dao.mapper;
+package com.epam.esm.dao.mapper;
 
-import bean.Tag;
+import com.epam.esm.entity.Tag;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

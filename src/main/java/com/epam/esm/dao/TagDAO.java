@@ -1,19 +1,20 @@
-package dao;
+package com.epam.esm.dao;
 
-import bean.Tag;
+import com.epam.esm.entity.Tag;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TagDAO {
 
-    public void create(String name);
+    public Tag createTag(String name);
 
-    public void delete(int id);
+    public void deleteTag(int id);
 
-    public Tag getTagByID(int id);
+    public Optional<Tag> getTagByID(int id);
 
     public List<Tag> getTags();
 
-    public List<Tag> getTagsByName(String name);
+    public Optional<Tag> getTagByName(String name);
 
 }

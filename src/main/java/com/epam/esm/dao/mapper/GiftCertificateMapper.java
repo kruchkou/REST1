@@ -1,6 +1,6 @@
-package dao.mapper;
+package com.epam.esm.dao.mapper;
 
-import bean.GiftCertificate;
+import com.epam.esm.entity.GiftCertificate;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -17,7 +17,6 @@ public class GiftCertificateMapper implements RowMapper<GiftCertificate> {
         giftCertificate.setDuration(rs.getInt(ParamColumn.DURATION));
         giftCertificate.setCreateDate(rs.getDate(ParamColumn.CREATE_DATE));
         giftCertificate.setLastsUpdateDate(rs.getDate(ParamColumn.LAST_UPDATE_DATE));
-
         return giftCertificate;
     }
 

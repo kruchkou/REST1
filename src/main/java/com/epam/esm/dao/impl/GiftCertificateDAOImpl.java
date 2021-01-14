@@ -1,17 +1,20 @@
-package dao.impl;
+package com.epam.esm.dao.impl;
 
-import bean.GiftCertificate;
-import dao.GiftCertificateDAO;
-import dao.mapper.GiftCertificateMapper;
+import com.epam.esm.dao.mapper.TagMapper;
+import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.dao.GiftCertificateDAO;
+import com.epam.esm.dao.mapper.GiftCertificateMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Optional;
 
 public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
@@ -26,7 +29,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     }
 
     @Override
-    public GiftCertificate create(String name, String description, int price, int duration) {
+    public GiftCertificate createGiftCertificate(String name, String description, int price, int duration) {
         final String CREATE_SQL = "INSERT INTO gift_certificate (name,description,price,duration,create_date) VALUES (?,?,?,?,?)";
         final int NAME_PARAM_ID = 1;
         final int DESC_PARAM_ID = 2;
@@ -36,8 +39,6 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
         final KeyHolder keyHolder = new GeneratedKeyHolder();
         final Date CURRENT_DATETIME = new java.sql.Date(new java.util.Date().getTime());
-
-        //jdbcTemplate.update(CREATE_SQL,name,description,price,duration,CURRENT_DATETIME);
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection
@@ -50,11 +51,11 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
             return ps;
         }, keyHolder);
 
-        return getCertificateByID(keyHolder.getKey().intValue());
+        return getCertificateByID(keyHolder.getKey().intValue()).get();
     }
 
     @Override
-    public int update(GiftCertificate updatedCertificate) {
+    public int updateCertificate(GiftCertificate updatedCertificate) {
         final Date CURRENT_DATETIME = new java.sql.Date(new java.util.Date().getTime());
         final String UPDATE_SQL = "UPDATE gift_certificate SET name = ?, description = ?, price = ?, duration = ?, last_update_date = ? WHERE id = ?";
         return jdbcTemplate.update(UPDATE_SQL,
@@ -67,33 +68,36 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     }
 
     @Override
-    public int delete(int id) {
+    public int deleteCertificate(int id) {
         final String DELETE_SQL = "DELETE FROM gift_certificate WHERE id = ?";
 
         return jdbcTemplate.update(DELETE_SQL, id);
     }
 
     @Override
-    public GiftCertificate getCertificateByID(int id) {
+    public Optional<GiftCertificate> getCertificateByID(int id) {
         final String SELECT_GIFT_BY_ID_SQL = "SELECT * FROM gift_certificate WHERE (id = ?)";
         final int FIRST_ELEMENT_INDEX = 0;
-        final int EMPTY_LIST_SIZE = 0;
 
         List<GiftCertificate> resultList = jdbcTemplate.query(SELECT_GIFT_BY_ID_SQL,
                 new Object[]{id}, new GiftCertificateMapper());
-
-        if (resultList.size() == EMPTY_LIST_SIZE) {
-            return null;
-        } else {
-            return resultList.get(FIRST_ELEMENT_INDEX);
-        }
+        
+            return Optional.of(resultList.get(FIRST_ELEMENT_INDEX));
     }
 
     @Override
+    @Transactional
     public List<GiftCertificate> getCertificates() {
         final String SELECT_ALL_SQL = "SELECT * FROM gift_certificate";
 
-        return jdbcTemplate.query(SELECT_ALL_SQL, new GiftCertificateMapper());
+        final String SELECT_TAGS_SQL = "SELECT * FROM tag JOIN gift_tag gt on tag.id = gt.tag " +
+                "where gt.gift = ?";
+
+        List<GiftCertificate> certificates = jdbcTemplate.query(SELECT_ALL_SQL, new GiftCertificateMapper());
+        for (GiftCertificate certificate : certificates) {
+            certificate.setTagList(jdbcTemplate.query(SELECT_TAGS_SQL,new Object[]{certificate.getId()}, new TagMapper()));
+        }
+        return certificates;
     }
 
     @Override

@@ -1,27 +1,17 @@
-package bean;
+package com.epam.esm.dto;
 
 import java.util.Date;
 import java.util.List;
 
-public class GiftCertificate {
+public class GiftCertificateDTO {
 
-    private int id;
     private String name;
     private String description;
     private int price;
     private int duration;
     private Date createDate;
     private Date lastsUpdateDate;
-
-    private List<Tag> tagList;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private List<String> tagNames;
 
     public String getName() {
         return name;
@@ -71,17 +61,24 @@ public class GiftCertificate {
         this.lastsUpdateDate = lastsUpdateDate;
     }
 
+    public List<String> getTagNames() {
+        return tagNames;
+    }
+
+    public void setTagNames(List<String> tagNames) {
+        this.tagNames = tagNames;
+    }
+
     @Override
     public String toString() {
-        return "GiftCertificate{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+        return "GiftCertificateDTO{" +
+                "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", duration=" + duration +
                 ", createDate=" + createDate +
                 ", lastsUpdateDate=" + lastsUpdateDate +
-                ", tagList=" + tagList +
+                ", tagNames=" + tagNames +
                 '}';
     }
 }

@@ -14,12 +14,12 @@
     </bean>
 
     <bean id="giftCertificateDAO"
-          class="dao.impl.GiftCertificateDAOImpl">
+          class="com.epam.esm.dao.impl.GiftCertificateDAOImpl">
         <constructor-arg name="dataSource" ref="dataSource"/>
     </bean>
 
     <bean id="tagDAO"
-          class="dao.impl.TagDAOImpl">
+          class="com.epam.esm.dao.impl.TagDAOImpl">
         <constructor-arg name="dataSource" ref="dataSource"/>
     </bean>
 

@@ -1,4 +1,4 @@
-package service;
+package com.epam.esm.service;
 
 public class ServiceProvider {
 }

@@ -1,16 +1,13 @@
-package dao.impl;
+package com.epam.esm.dao.impl;
 
-import bean.GiftCertificate;
-import dao.GiftCertificateDAO;
-import org.junit.jupiter.api.AfterAll;
+import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.dao.GiftCertificateDAO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import org.springframework.util.Assert;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,14 +32,14 @@ class GiftCertificateDAOImplTest {
     }
 
     @Test
-    void create() {
+    void createGiftCertificate() {
         final String TEST_NAME = "SaveTest Cert";
         final String TEST_DESC = "This is SaveTest certificate";
 
         final int TEST_PRICE = 300;
         final int TEST_DURATION = 30;
 
-        GiftCertificate savedGift = giftCertificateDAO.create(TEST_NAME,TEST_DESC, TEST_PRICE, TEST_DURATION);
+        GiftCertificate savedGift = giftCertificateDAO.createGiftCertificate(TEST_NAME,TEST_DESC, TEST_PRICE, TEST_DURATION);
 
         assertNotNull(savedGift);
         assertEquals(savedGift.getName(),TEST_NAME);
@@ -52,18 +49,18 @@ class GiftCertificateDAOImplTest {
     }
 
     @Test
-    void delete() {
+    void deleteGiftCertificate() {
         final int TEST_ID = 1;
 
         final int QUANTITY_WHEN_SUCCESSFULLY_DELETED = 1;
         final int QUANTITY_WHEN_NOTHING_DELETED = 0;
 
-        assertEquals(QUANTITY_WHEN_SUCCESSFULLY_DELETED,giftCertificateDAO.delete(TEST_ID));
-        assertEquals(QUANTITY_WHEN_NOTHING_DELETED,giftCertificateDAO.delete(TEST_ID));
+        assertEquals(QUANTITY_WHEN_SUCCESSFULLY_DELETED,giftCertificateDAO.deleteCertificate(TEST_ID));
+        assertEquals(QUANTITY_WHEN_NOTHING_DELETED,giftCertificateDAO.deleteCertificate(TEST_ID));
     }
 
     @Test
-    void update() {
+    void updateGiftCertificate() {
         final int NEW_TEST_PRICE = 500;
         final int TESTED_ID = 1;
         final int QUANTITY_WHEN_SUCCESSFULLY_UPDATED = 1;
@@ -72,7 +69,7 @@ class GiftCertificateDAOImplTest {
 
         gift.setPrice(NEW_TEST_PRICE);
 
-        assertEquals(QUANTITY_WHEN_SUCCESSFULLY_UPDATED,giftCertificateDAO.update(gift));
+        assertEquals(QUANTITY_WHEN_SUCCESSFULLY_UPDATED,giftCertificateDAO.updateCertificate(gift));
 
         gift = giftCertificateDAO.getCertificateByID(gift.getId());
 

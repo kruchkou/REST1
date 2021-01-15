@@ -4,7 +4,7 @@ import com.epam.esm.service.exception.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value= HttpStatus.NO_CONTENT, reason="No gift certificate with this id")
+@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No gift certificate with this id")
 public class GiftCertificateNotFoundException extends ServiceException {
 
     public GiftCertificateNotFoundException() {

@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 class EntityDTOGiftCertificateMapperTest {
 
     @Test
-    void toEntity(@Mock GiftCertificateDTO giftCertificateDTO) {
+    public void toEntity(@Mock GiftCertificateDTO giftCertificateDTO) {
         final String testName = "test name";
         final String testDescription = "test description";
         final int testPrice = 10;
@@ -43,7 +43,7 @@ class EntityDTOGiftCertificateMapperTest {
     }
 
     @Test
-    void toDTO(@Mock GiftCertificate giftCertificate) {
+    public void toDTO(@Mock GiftCertificate giftCertificate) {
         final String testName = "test name";
         final String testDescription = "test description";
         final int testPrice = 10;

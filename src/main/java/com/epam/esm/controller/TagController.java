@@ -21,23 +21,23 @@ public class TagController {
     }
 
     @GetMapping
-    List<TagDTO> getTags() {
+    public List<TagDTO> getTags() {
         return tagService.getTags();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    TagDTO newTag(@RequestBody TagDTO tagDTO) {
+    public TagDTO newTag(@RequestBody TagDTO tagDTO) {
         return tagService.createTag(tagDTO);
     }
 
     @GetMapping("/{id}")
-    TagDTO getGiftCertificateByID(@PathVariable int id) {
+    public TagDTO getGiftCertificateByID(@PathVariable int id) {
         return tagService.getTagByID(id);
     }
 
     @DeleteMapping("/{id}")
-    void deleteEmployee(@PathVariable int id) {
+    public void deleteEmployee(@PathVariable int id) {
         tagService.deleteTag(id);
     }
 

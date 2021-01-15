@@ -20,40 +20,38 @@ public class GiftCertificateController {
     }
 
     @GetMapping
-    List<GiftCertificateDTO> getCertificates() {
+    public List<GiftCertificateDTO> getCertificates() {
         return giftCertificateService.getCertificates();
     }
 
     @GetMapping("/{id}")
-    GiftCertificateDTO getGiftCertificateByID(@PathVariable int id) {
+    public GiftCertificateDTO getGiftCertificateByID(@PathVariable int id) {
         return giftCertificateService.getGiftCertificateByID(id);
     }
 
     @GetMapping(params = {"tagName"})
-    List<GiftCertificateDTO> getGiftCertificateByTagName(@RequestParam(value = "tagNames") String tagNames) {
+    public List<GiftCertificateDTO> getGiftCertificateByTagName(@RequestParam(value = "tagNames") String tagNames) {
         return giftCertificateService.getCertificatesByTagName(tagNames);
     }
 
     @GetMapping(params = {"name"})
-    List<GiftCertificateDTO> getGiftCertificateByNameOrDesc(@RequestParam(value = "name") String name) {
-        System.out.println(name);
+    public List<GiftCertificateDTO> getGiftCertificateByNameOrDesc(@RequestParam(value = "name") String name) {
         return giftCertificateService.getCertificatesByNameOrDescription(name);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    GiftCertificateDTO newGiftCertificate(@RequestBody GiftCertificateDTO giftCertificateDTO) {
-        System.out.println(giftCertificateDTO);
+    public GiftCertificateDTO newGiftCertificate(@RequestBody GiftCertificateDTO giftCertificateDTO) {
         return giftCertificateService.createGiftCertificate(giftCertificateDTO);
     }
 
     @PutMapping("/{id}")
-    GiftCertificateDTO updateGiftCertificate(@RequestBody GiftCertificateDTO giftCertificateDTO, @PathVariable int id) {
+    public GiftCertificateDTO updateGiftCertificate(@RequestBody GiftCertificateDTO giftCertificateDTO, @PathVariable int id) {
         return giftCertificateService.updateCertificate(giftCertificateDTO,id);
     }
 
     @DeleteMapping("/{id}")
-    void deleteEmployee(@PathVariable int id) {
+    public void deleteEmployee(@PathVariable int id) {
         giftCertificateService.deleteCertificate(id);
     }
 

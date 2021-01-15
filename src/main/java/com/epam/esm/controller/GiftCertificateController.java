@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("giftCertificates")
+@RequestMapping("v1/giftCertificates")
 public class GiftCertificateController {
 
     private final GiftCertificateService giftCertificateService;

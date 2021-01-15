@@ -4,7 +4,6 @@ import com.epam.esm.dao.TagDAO;
 import com.epam.esm.model.dto.TagDTO;
 import com.epam.esm.model.entity.Tag;
 import com.epam.esm.service.TagService;
-import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
 import com.epam.esm.service.exception.impl.TagDataValidationException;
 import com.epam.esm.service.exception.impl.TagNotFoundException;
 import com.epam.esm.service.util.mapper.EntityDTOTagMapper;
@@ -17,7 +16,6 @@ import java.util.Optional;
 public class TagServiceImpl implements TagService {
 
     private final TagDAO tagDAO;
-    private static final TagValidator tagValidator = new TagValidator();
 
     private static final String NO_TAGS_FOUND = "No tags found";
     private static final String NO_TAG_WITH_ID_FOUND = "No tag with %d id found";
@@ -31,7 +29,7 @@ public class TagServiceImpl implements TagService {
     @Override
     @Transactional
     public TagDTO createTag(TagDTO tagDTO) {
-        if (tagValidator.validateForCreate(tagDTO)) {
+        if (TagValidator.validateForCreate(tagDTO)) {
             final String name = tagDTO.getName();
             Tag tag = tagDAO.createTag(name);
 

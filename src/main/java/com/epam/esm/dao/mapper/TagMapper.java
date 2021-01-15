@@ -7,6 +7,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class TagMapper implements RowMapper<Tag> {
+
+    private final static TagMapper instance = TagMapper.getInstance();
+
+    private TagMapper() {
+    }
+
+    public static TagMapper getInstance() {
+        return instance;
+    }
+
     @Override
     public Tag mapRow(ResultSet rs, int rowNum) throws SQLException {
         Tag tag = new Tag();

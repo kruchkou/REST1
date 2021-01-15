@@ -7,6 +7,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class GiftCertificateMapper implements RowMapper<GiftCertificate> {
+
+    private final static GiftCertificateMapper instance = new GiftCertificateMapper();
+
+    private GiftCertificateMapper() {
+
+    }
+
+    public static GiftCertificateMapper getInstance() {
+        return instance;
+    }
+
     @Override
     public GiftCertificate mapRow(ResultSet rs, int rowNum) throws SQLException {
         GiftCertificate giftCertificate = new GiftCertificate();

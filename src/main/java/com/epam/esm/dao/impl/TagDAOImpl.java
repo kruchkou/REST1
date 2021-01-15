@@ -17,6 +17,18 @@ public class TagDAOImpl implements TagDAO {
     private final DataSource dataSource;
     private final JdbcTemplate jdbcTemplate;
 
+    private final static TagMapper tagMapper = TagMapper.getInstance();
+
+    private final static String CREATE_SQL = "INSERT INTO tag(name) VALUES (?)";
+    private final static String DELETE_SQL = "DELETE FROM tag WHERE id = ?";
+    private final static String INSERT_INTO_GIFT_TAG_SQL = "INSERT INTO gift_tag(gift, tag) VALUES (?,?)";
+    private final static String GET_TAG_BY_ID_SQL = "SELECT * FROM tag WHERE id = ?";
+    private final static String GET_TAGS_SQL = "SELECT * FROM tag";
+    private final static String SELECT_BY_TAG_NAME_SQL = "SELECT * FROM tag tags " +
+            "INNER JOIN gift_tag link ON tags.id = link.tag " +
+            "INNER JOIN gift_certificate gift ON link.gift = gift.id " +
+            "WHERE (gift.id = ?)";
+
     @Autowired
     public TagDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -25,7 +37,6 @@ public class TagDAOImpl implements TagDAO {
 
     @Override
     public Tag createTag(String name) {
-        final String CREATE_SQL = "INSERT INTO tag(name) VALUES (?)";
         jdbcTemplate.update(CREATE_SQL, name);
 
         return getTagByName(name).get();
@@ -33,24 +44,21 @@ public class TagDAOImpl implements TagDAO {
 
     @Override
     public void deleteTag(int id) {
-        final String DELETE_SQL = "DELETE FROM tag WHERE id = ?";
         jdbcTemplate.update(DELETE_SQL, id);
     }
 
     @Override
     public void insertGiftTag(int giftID, int tagID) {
-        final String INSERT_INTO_GIFT_TAG_SQL = "INSERT INTO gift_tag(gift, tag) VALUES (?,?)";
         jdbcTemplate.update(INSERT_INTO_GIFT_TAG_SQL, giftID, tagID);
     }
 
     @Override
     public Optional<Tag> getTagByID(int id) {
-        final String GET_TAG_BY_ID_SQL = "SELECT * FROM tag WHERE id = ?";
         final int FIRST_ELEMENT_INDEX = 0;
 
         Optional<Tag> optional;
         List<Tag> tagList = jdbcTemplate.query(GET_TAG_BY_ID_SQL,
-                new Object[]{id}, new TagMapper());
+                new Object[]{id}, tagMapper);
 
         if (tagList.isEmpty()) {
             optional = Optional.empty();
@@ -63,18 +71,11 @@ public class TagDAOImpl implements TagDAO {
 
     @Override
     public List<Tag> getTags() {
-        final String GET_TAGS_SQL = "SELECT * FROM tag";
-
-        return jdbcTemplate.query(GET_TAGS_SQL, new TagMapper());
+        return jdbcTemplate.query(GET_TAGS_SQL, tagMapper);
     }
 
     public List<Tag> getTagListByGiftCertificateID(int id) {
-        final String SELECT_BY_TAG_NAME_SQL = "SELECT * FROM tag tags " +
-                "INNER JOIN gift_tag link ON tags.id = link.tag " +
-                "INNER JOIN gift_certificate gift ON link.gift = gift.id " +
-                "WHERE (gift.id = ?)";
-
-        return jdbcTemplate.query(SELECT_BY_TAG_NAME_SQL, new Object[]{id}, new TagMapper());
+        return jdbcTemplate.query(SELECT_BY_TAG_NAME_SQL, new Object[]{id}, tagMapper);
     }
 
     @Override
@@ -84,7 +85,7 @@ public class TagDAOImpl implements TagDAO {
         final int FIRST_ELEMENT_INDEX = 0;
 
         List<Tag> tagList = jdbcTemplate.query(SELECT_BY_TAG_NAME_SQL,
-                new Object[]{name}, new TagMapper());
+                new Object[]{name}, tagMapper);
 
         Optional<Tag> optional;
 

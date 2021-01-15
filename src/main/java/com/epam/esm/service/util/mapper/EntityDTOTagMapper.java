@@ -8,6 +8,9 @@ import java.util.List;
 
 public class EntityDTOTagMapper {
 
+    private EntityDTOTagMapper() {
+    }
+
     public static Tag toEntity(TagDTO tagDTO) {
         Tag tag = new Tag();
 

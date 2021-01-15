@@ -23,7 +23,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     private final GiftCertificateDAO giftCertificateDAO;
     private final TagDAO tagDAO;
-    private static final GiftCertificateValidator giftCertificateValidator = new GiftCertificateValidator();
 
     private static final String NO_GIFT_CERTIFICATE_WITH_ID_FOUND = "No certificate with %d id found";
     private static final String NO_GIFT_CERTIFICATES_FOUND = "No certificates found";
@@ -73,7 +72,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Transactional
     public GiftCertificateDTO createGiftCertificate(GiftCertificateDTO giftCertificateDTO) {
 
-        if (!giftCertificateValidator.validateForCreate(giftCertificateDTO)) {
+        if (!GiftCertificateValidator.validateForCreate(giftCertificateDTO)) {
             throw new GiftCertificateDataValidationException(DATA_VALIDATION_EXCEPTION);
         }
 

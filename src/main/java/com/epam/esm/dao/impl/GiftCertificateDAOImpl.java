@@ -24,21 +24,33 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     private final DataSource dataSource;
     private final JdbcTemplate jdbcTemplate;
-    private final TagDAO tagDAO;
 
-    private final static String SELECT_TAGS_BY_GIFT_ID = "SELECT id,name FROM tag tags JOIN gift_tag link ON tags.id = link.tag WHERE link.gift = ?";
+    private final static GiftCertificateMapper giftCertificateMapper = GiftCertificateMapper.getInstance();
+    private final static TagMapper tagMapper = TagMapper.getInstance();
+
+    private final static String SELECT_BY_NAME_OR_DESCRIPTION_SQL = "SELECT * FROM gift_certificate gift " +
+            "WHERE (name REGEXP ? OR description REGEXP ?)";
+    private final static String SELECT_BY_TAG_NAME_SQL = "SELECT * FROM gift_certificate gifts " +
+            "INNER JOIN gift_tag link ON gifts.id = link.gift " +
+            "INNER JOIN tag tags ON link.tag = tags.id " +
+            "WHERE (tags.name = ?)";
+    private final static String SELECT_ALL_SQL = "SELECT * FROM gift_certificate";
+
+    private final static String SELECT_TAGS_SQL = "SELECT * FROM tag JOIN gift_tag gt on tag.id = gt.tag " +
+            "where gt.gift = ?";
+    private final static String SELECT_GIFT_BY_ID_SQL = "SELECT * FROM gift_certificate WHERE (id = ?)";
+    private final static String DELETE_SQL = "DELETE FROM gift_certificate WHERE id = ?";
+    private final static String UPDATE_SQL = "UPDATE gift_certificate SET name = ?, description = ?, price = ?, duration = ?, last_update_date = ? WHERE id = ?";
+    private final static String CREATE_SQL = "INSERT INTO gift_certificate (name,description,price,duration,create_date) VALUES (?,?,?,?,?)";
 
     @Autowired
     public GiftCertificateDAOImpl(DataSource dataSource, TagDAO tagDAO) {
         this.dataSource = dataSource;
         jdbcTemplate = new JdbcTemplate(dataSource);
-        this.tagDAO = tagDAO;
     }
 
     @Override
     public GiftCertificate createGiftCertificate(String name, String description, int price, int duration) {
-        final String CREATE_SQL = "INSERT INTO gift_certificate (name,description,price,duration,create_date) VALUES (?,?,?,?,?)";
-
         final KeyHolder keyHolder = new GeneratedKeyHolder();
         final Date CURRENT_DATETIME = new java.sql.Date(new java.util.Date().getTime());
 
@@ -59,7 +71,6 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     @Override
     public GiftCertificate updateGiftCertificate(GiftCertificate updatedCertificate, int id) {
         final Date CURRENT_DATETIME = new java.sql.Date(new java.util.Date().getTime());
-        final String UPDATE_SQL = "UPDATE gift_certificate SET name = ?, description = ?, price = ?, duration = ?, last_update_date = ? WHERE id = ?";
         jdbcTemplate.update(UPDATE_SQL,
                 updatedCertificate.getName(),
                 updatedCertificate.getDescription(),
@@ -72,18 +83,16 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     @Override
     public void deleteGiftCertificate(int id) {
-        final String DELETE_SQL = "DELETE FROM gift_certificate WHERE id = ?";
         jdbcTemplate.update(DELETE_SQL, id);
     }
 
     @Override
     public Optional<GiftCertificate> getGiftCertificateByID(int id) {
-        final String SELECT_GIFT_BY_ID_SQL = "SELECT * FROM gift_certificate WHERE (id = ?)";
         final int FIRST_ELEMENT_INDEX = 0;
 
         Optional<GiftCertificate> optional;
         List<GiftCertificate> resultList = jdbcTemplate.query(SELECT_GIFT_BY_ID_SQL,
-                new Object[]{id}, new GiftCertificateMapper());
+                new Object[]{id}, giftCertificateMapper);
 
         if (resultList.isEmpty()) {
             optional = Optional.empty();
@@ -97,34 +106,21 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     @Override
     @Transactional
     public List<GiftCertificate> getGiftCertificates() {
-        final String SELECT_ALL_SQL = "SELECT * FROM gift_certificate";
-
-        final String SELECT_TAGS_SQL = "SELECT * FROM tag JOIN gift_tag gt on tag.id = gt.tag " +
-                "where gt.gift = ?";
-
-        List<GiftCertificate> certificates = jdbcTemplate.query(SELECT_ALL_SQL, new GiftCertificateMapper());
+        List<GiftCertificate> certificates = jdbcTemplate.query(SELECT_ALL_SQL, giftCertificateMapper);
         for (GiftCertificate certificate : certificates) {
-            certificate.setTagList(jdbcTemplate.query(SELECT_TAGS_SQL, new Object[]{certificate.getId()}, new TagMapper()));
+            certificate.setTagList(jdbcTemplate.query(SELECT_TAGS_SQL, new Object[]{certificate.getId()}, tagMapper));
         }
         return certificates;
     }
 
     @Override
     public List<GiftCertificate> getGiftCertificatesByTagName(String tagName) {
-        final String SELECT_BY_TAG_NAME_SQL = "SELECT * FROM gift_certificate gifts " +
-                "INNER JOIN gift_tag link ON gifts.id = link.gift " +
-                "INNER JOIN tag tags ON link.tag = tags.id " +
-                "WHERE (tags.name = ?)";
-
-        return jdbcTemplate.query(SELECT_BY_TAG_NAME_SQL, new Object[]{tagName}, new GiftCertificateMapper());
+        return jdbcTemplate.query(SELECT_BY_TAG_NAME_SQL, new Object[]{tagName}, giftCertificateMapper);
     }
 
     @Override
     public List<GiftCertificate> getGiftCertificatesByNameOrDescription(String searchText) {
-        final String SELECT_BY_NAME_OR_DESCRIPTION_SQL = "SELECT * FROM gift_certificate gift " +
-                "WHERE (name REGEXP ? OR description REGEXP ?)";
-
-        return jdbcTemplate.query(SELECT_BY_NAME_OR_DESCRIPTION_SQL, new Object[]{searchText, searchText}, new GiftCertificateMapper());
+        return jdbcTemplate.query(SELECT_BY_NAME_OR_DESCRIPTION_SQL, new Object[]{searchText, searchText}, giftCertificateMapper);
     }
 
     public static class ParamColumn {

@@ -2,12 +2,14 @@ package com.epam.esm.service.util.mapper;
 
 import com.epam.esm.model.dto.GiftCertificateDTO;
 import com.epam.esm.model.entity.GiftCertificate;
-import com.epam.esm.model.entity.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EntityDTOGiftCertificateMapper {
+
+    private EntityDTOGiftCertificateMapper() {
+    }
 
     public static GiftCertificate toEntity(GiftCertificateDTO giftCertificateDTO) {
         GiftCertificate giftCertificate = new GiftCertificate();

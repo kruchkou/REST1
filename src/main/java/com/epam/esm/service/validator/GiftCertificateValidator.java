@@ -4,7 +4,10 @@ import com.epam.esm.model.dto.GiftCertificateDTO;
 
 public class GiftCertificateValidator {
 
-    public boolean validateForCreate(GiftCertificateDTO giftCertificateDTO) {
+    private GiftCertificateValidator() {
+    }
+
+    public static boolean validateForCreate(GiftCertificateDTO giftCertificateDTO) {
         if (!validateName(giftCertificateDTO.getName())) {
             return false;
         }
@@ -17,21 +20,21 @@ public class GiftCertificateValidator {
         return validateDuration(giftCertificateDTO.getDuration());
     }
 
-    private boolean validateDuration(int duration) {
+    private static boolean validateDuration(int duration) {
         return duration > 0;
     }
 
-    private boolean validatePrice(int price) {
+    private static boolean validatePrice(int price) {
         return price > 0;
     }
 
-    private boolean validateName(String name) {
+    private static boolean validateName(String name) {
         final int MAX_NAME_LENGTH = 45;
 
         return name != null && name.length() < MAX_NAME_LENGTH;
     }
 
-    private boolean validateDesc(String desc) {
+    private static boolean validateDesc(String desc) {
         final int MAX_DESC_LENGTH = 200;
 
         return desc != null && desc.length() < MAX_DESC_LENGTH;

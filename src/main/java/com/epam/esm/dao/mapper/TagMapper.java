@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class TagMapper implements RowMapper<Tag> {
 
-    private final static TagMapper instance = TagMapper.getInstance();
+    private final static TagMapper instance = new TagMapper();
 
     private TagMapper() {
     }

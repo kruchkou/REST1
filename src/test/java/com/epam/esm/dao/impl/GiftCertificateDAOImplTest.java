@@ -1,8 +1,7 @@
 package com.epam.esm.dao.impl;
 
-import com.epam.esm.dao.TagDAO;
-import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.dao.GiftCertificateDAO;
+import com.epam.esm.model.entity.GiftCertificate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,6 @@ class GiftCertificateDAOImplTest {
 
     private EmbeddedDatabase embeddedDatabase;
     private GiftCertificateDAO giftCertificateDAO;
-    private TagDAO tagDAO;
 
     @BeforeEach
     public void setUp() {
@@ -29,8 +27,7 @@ class GiftCertificateDAOImplTest {
                 .setType(EmbeddedDatabaseType.H2)
                 .build();
 
-        tagDAO = new TagDAOImpl(embeddedDatabase);
-        giftCertificateDAO = new GiftCertificateDAOImpl(embeddedDatabase,tagDAO);
+        giftCertificateDAO = new GiftCertificateDAOImpl(embeddedDatabase);
     }
 
     @AfterEach

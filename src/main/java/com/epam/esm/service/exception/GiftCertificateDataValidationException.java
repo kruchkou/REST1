@@ -1,11 +1,10 @@
-package com.epam.esm.service.exception.impl;
+package com.epam.esm.service.exception;
 
-import com.epam.esm.service.exception.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "GiftCertificate data validation failed")
-public class GiftCertificateDataValidationException extends ServiceException {
+public class GiftCertificateDataValidationException extends RuntimeException {
 
     public GiftCertificateDataValidationException() {
         super();

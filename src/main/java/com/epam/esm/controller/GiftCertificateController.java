@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("v1/giftCertificates")
+@RequestMapping("v1/gift-certificates")
 public class GiftCertificateController {
 
     private final GiftCertificateService giftCertificateService;
@@ -47,10 +47,11 @@ public class GiftCertificateController {
 
     @PutMapping("/{id}")
     public GiftCertificateDTO updateGiftCertificate(@RequestBody GiftCertificateDTO giftCertificateDTO, @PathVariable int id) {
-        return giftCertificateService.updateCertificate(giftCertificateDTO,id);
+        return giftCertificateService.updateCertificate(giftCertificateDTO, id);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEmployee(@PathVariable int id) {
         giftCertificateService.deleteCertificate(id);
     }

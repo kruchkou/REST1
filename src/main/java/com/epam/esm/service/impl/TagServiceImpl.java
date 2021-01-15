@@ -4,15 +4,17 @@ import com.epam.esm.dao.TagDAO;
 import com.epam.esm.model.dto.TagDTO;
 import com.epam.esm.model.entity.Tag;
 import com.epam.esm.service.TagService;
-import com.epam.esm.service.exception.impl.TagDataValidationException;
-import com.epam.esm.service.exception.impl.TagNotFoundException;
+import com.epam.esm.service.exception.TagDataValidationException;
+import com.epam.esm.service.exception.TagNotFoundException;
 import com.epam.esm.service.util.mapper.EntityDTOTagMapper;
 import com.epam.esm.service.validator.TagValidator;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class TagServiceImpl implements TagService {
 
     private final TagDAO tagDAO;
@@ -40,6 +42,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    @Transactional
     public void deleteTag(int id) {
         tagDAO.deleteTag(id);
     }
@@ -59,7 +62,7 @@ public class TagServiceImpl implements TagService {
     public List<TagDTO> getTags() {
         List<Tag> tagList = tagDAO.getTags();
 
-        if(tagList.isEmpty()) {
+        if (tagList.isEmpty()) {
             throw new TagNotFoundException(NO_TAGS_FOUND);
         }
 

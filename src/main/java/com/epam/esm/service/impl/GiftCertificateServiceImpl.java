@@ -6,19 +6,20 @@ import com.epam.esm.model.dto.GiftCertificateDTO;
 import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.model.entity.Tag;
 import com.epam.esm.service.GiftCertificateService;
-import com.epam.esm.service.exception.impl.GiftCertificateDataValidationException;
-import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
+import com.epam.esm.service.exception.GiftCertificateDataValidationException;
+import com.epam.esm.service.exception.GiftCertificateNotFoundException;
 import com.epam.esm.service.util.mapper.EntityDTOGiftCertificateMapper;
 import com.epam.esm.service.validator.GiftCertificateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     private final GiftCertificateDAO giftCertificateDAO;
@@ -35,6 +36,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
+    @Transactional
     public void deleteCertificate(int id) {
         if (!giftCertificateDAO.getGiftCertificateByID(id).isPresent()) {
             throw new GiftCertificateNotFoundException();
@@ -44,28 +46,31 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public GiftCertificateDTO getGiftCertificateByID(int id) {
-        Optional<GiftCertificate> giftCertificate = giftCertificateDAO.getGiftCertificateByID(id);
+        Optional<GiftCertificate> optionalGiftCertificate = giftCertificateDAO.getGiftCertificateByID(id);
 
-        if (!giftCertificate.isPresent()) {
+        if (!optionalGiftCertificate.isPresent()) {
             throw new GiftCertificateNotFoundException(String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id));
         }
 
-        return EntityDTOGiftCertificateMapper.toDTO(giftCertificate.get());
+        GiftCertificate giftCertificate = optionalGiftCertificate.orElseThrow(() ->
+                new GiftCertificateNotFoundException(String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id)));
+        return EntityDTOGiftCertificateMapper.toDTO(giftCertificate);
     }
 
     @Override
+    @Transactional
     public GiftCertificateDTO updateCertificate(GiftCertificateDTO giftCertificateDTO, int id) {
 
-        if(!giftCertificateDAO.getGiftCertificateByID(id).isPresent()) {
-            throw new GiftCertificateNotFoundException(String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND,id));
+        Optional<GiftCertificate> optionalGiftCertificate = giftCertificateDAO.getGiftCertificateByID(id);
+
+        if(!optionalGiftCertificate.isPresent()) {
+            throw new GiftCertificateNotFoundException(String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id));
         }
 
-        GiftCertificate giftCertificate = EntityDTOGiftCertificateMapper.toEntity(giftCertificateDTO);
-        giftCertificate = giftCertificateDAO.updateGiftCertificate(giftCertificate, id);
+        GiftCertificate updatedGiftCertificate = EntityDTOGiftCertificateMapper.toEntity(giftCertificateDTO);
+        updatedGiftCertificate = giftCertificateDAO.updateGiftCertificate(updatedGiftCertificate, id);
 
-        giftCertificateDTO = EntityDTOGiftCertificateMapper.toDTO(giftCertificate);
-
-        return giftCertificateDTO;
+        return EntityDTOGiftCertificateMapper.toDTO(updatedGiftCertificate);
     }
 
     @Override
@@ -83,7 +88,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
         GiftCertificate newGiftCertificate = giftCertificateDAO.createGiftCertificate(name, desc, price, duration);
 
-        createTags(newGiftCertificate.getId(),giftCertificateDTO.getTagNames());
+        createTagsIfNotFoundAndInsert(newGiftCertificate.getId(), giftCertificateDTO.getTagNames());
 
         return EntityDTOGiftCertificateMapper.toDTO(newGiftCertificate);
     }
@@ -93,7 +98,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         List<GiftCertificateDTO> giftCertificateDTOList = new ArrayList<>();
         List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates();
 
-        if(giftCertificateList.isEmpty()) {
+        if (giftCertificateList.isEmpty()) {
             throw new GiftCertificateNotFoundException(NO_GIFT_CERTIFICATES_FOUND);
         }
 
@@ -108,7 +113,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public List<GiftCertificateDTO> getCertificatesByTagName(String tagName) {
         List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificatesByTagName(tagName);
 
-        if(giftCertificateList.isEmpty()) {
+        if (giftCertificateList.isEmpty()) {
             throw new GiftCertificateNotFoundException(NO_GIFT_CERTIFICATES_FOUND);
         }
 
@@ -119,7 +124,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public List<GiftCertificateDTO> getCertificatesByNameOrDescription(String searchText) {
         List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificatesByNameOrDescription(searchText);
 
-        if(giftCertificateList.isEmpty()) {
+        if (giftCertificateList.isEmpty()) {
             throw new GiftCertificateNotFoundException(NO_GIFT_CERTIFICATES_FOUND);
         }
 
@@ -151,12 +156,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return tagNamesList;
     }
 
-    private void createTags(int giftID, List<String> tagNamesList) {
+    private void createTagsIfNotFoundAndInsert(int giftID, List<String> tagNamesList) {
         for (String tagName : tagNamesList) {
             Optional<Tag> optionalTag = tagDAO.getTagByName(tagName);
             Tag tag = optionalTag.orElseGet(() -> tagDAO.createTag(tagName));
 
-            tagDAO.insertGiftTag(giftID,tag.getId());
+            tagDAO.insertGiftTag(giftID, tag.getId());
         }
     }
 

@@ -6,13 +6,13 @@ import com.epam.esm.model.entity.GiftCertificate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntityDTOGiftCertificateMapper {
+public final class EntityDTOGiftCertificateMapper {
 
     private EntityDTOGiftCertificateMapper() {
     }
 
     public static GiftCertificate toEntity(GiftCertificateDTO giftCertificateDTO) {
-        GiftCertificate giftCertificate = new GiftCertificate();
+        final GiftCertificate giftCertificate = new GiftCertificate();
 
         giftCertificate.setId(giftCertificateDTO.getId());
         giftCertificate.setName(giftCertificateDTO.getName());
@@ -26,7 +26,7 @@ public class EntityDTOGiftCertificateMapper {
     }
 
     public static GiftCertificateDTO toDTO(GiftCertificate giftCertificate) {
-        GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO();
+        final GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO();
 
         giftCertificateDTO.setId(giftCertificate.getId());
         giftCertificateDTO.setName(giftCertificate.getName());
@@ -40,7 +40,7 @@ public class EntityDTOGiftCertificateMapper {
     }
 
     public static List<GiftCertificateDTO> toDTO(List<GiftCertificate> giftCertificateList) {
-        List<GiftCertificateDTO> giftCertificateDTOList = new ArrayList<>();
+        final List<GiftCertificateDTO> giftCertificateDTOList = new ArrayList<>();
 
         for (GiftCertificate giftCertificate : giftCertificateList) {
 
@@ -53,7 +53,7 @@ public class EntityDTOGiftCertificateMapper {
     }
 
     public static List<GiftCertificate> toEntity(List<GiftCertificateDTO> giftCertificateDTOList) {
-        List<GiftCertificate> giftCertificateList = new ArrayList<>();
+        final List<GiftCertificate> giftCertificateList = new ArrayList<>();
 
         for (GiftCertificateDTO giftCertificateDTO : giftCertificateDTOList) {
 

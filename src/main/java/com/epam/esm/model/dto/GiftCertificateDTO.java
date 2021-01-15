@@ -8,11 +8,11 @@ import java.util.Objects;
 
 public class GiftCertificateDTO {
 
-    private int id;
+    private Integer id;
     private String name;
     private String description;
-    private int price;
-    private int duration;
+    private Integer price;
+    private Integer duration;
     private Date createDate;
     private Date lastsUpdateDate;
     @JsonInclude(JsonInclude.Include.NON_NULL)

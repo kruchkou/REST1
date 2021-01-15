@@ -1,12 +1,10 @@
 package com.epam.esm.dao;
 
 import com.epam.esm.model.entity.GiftCertificate;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
-@Component
 public interface GiftCertificateDAO {
 
     public void deleteGiftCertificate(int id);

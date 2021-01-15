@@ -1,11 +1,10 @@
-package com.epam.esm.service.exception.impl;
+package com.epam.esm.service.exception;
 
-import com.epam.esm.service.exception.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value= HttpStatus.BAD_REQUEST, reason="Tag data validation failed")
-public class TagDataValidationException extends ServiceException {
+@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Tag data validation failed")
+public class TagDataValidationException extends RuntimeException {
 
     public TagDataValidationException() {
         super();

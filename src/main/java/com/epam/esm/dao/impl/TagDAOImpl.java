@@ -5,13 +5,13 @@ import com.epam.esm.dao.mapper.TagMapper;
 import com.epam.esm.model.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Repository
 public class TagDAOImpl implements TagDAO {
 
     private final DataSource dataSource;
@@ -56,17 +56,10 @@ public class TagDAOImpl implements TagDAO {
     public Optional<Tag> getTagByID(int id) {
         final int FIRST_ELEMENT_INDEX = 0;
 
-        Optional<Tag> optional;
         List<Tag> tagList = jdbcTemplate.query(GET_TAG_BY_ID_SQL,
                 new Object[]{id}, tagMapper);
 
-        if (tagList.isEmpty()) {
-            optional = Optional.empty();
-        } else {
-            optional = Optional.of(tagList.get(FIRST_ELEMENT_INDEX));
-        }
-
-        return optional;
+        return tagList.isEmpty() ? Optional.empty() : Optional.of(tagList.get(FIRST_ELEMENT_INDEX));
     }
 
     @Override
@@ -81,20 +74,11 @@ public class TagDAOImpl implements TagDAO {
     @Override
     public Optional<Tag> getTagByName(String name) {
         final String SELECT_BY_TAG_NAME_SQL = "SELECT * FROM tag WHERE (name = ?)";
-
         final int FIRST_ELEMENT_INDEX = 0;
 
         List<Tag> tagList = jdbcTemplate.query(SELECT_BY_TAG_NAME_SQL,
                 new Object[]{name}, tagMapper);
 
-        Optional<Tag> optional;
-
-        if (tagList.isEmpty()) {
-            optional = Optional.empty();
-        } else {
-            optional = Optional.of(tagList.get(FIRST_ELEMENT_INDEX));
-        }
-
-        return optional;
+        return tagList.isEmpty() ? Optional.empty() : Optional.of(tagList.get(FIRST_ELEMENT_INDEX));
     }
 }

@@ -6,7 +6,7 @@ import com.epam.esm.model.entity.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntityDTOTagMapper {
+public final class EntityDTOTagMapper {
 
     private EntityDTOTagMapper() {
     }

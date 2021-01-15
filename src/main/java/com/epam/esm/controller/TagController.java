@@ -1,7 +1,6 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.model.dto.TagDTO;
-import com.epam.esm.model.entity.Tag;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +36,7 @@ public class TagController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEmployee(@PathVariable int id) {
         tagService.deleteTag(id);
     }

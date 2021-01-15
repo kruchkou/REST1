@@ -1,7 +1,6 @@
 package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.GiftCertificateDAO;
-import com.epam.esm.dao.TagDAO;
 import com.epam.esm.dao.mapper.GiftCertificateMapper;
 import com.epam.esm.dao.mapper.TagMapper;
 import com.epam.esm.model.entity.GiftCertificate;
@@ -9,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.Date;
@@ -19,7 +17,7 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Repository
 public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     private final DataSource dataSource;
@@ -44,7 +42,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     private final static String CREATE_SQL = "INSERT INTO gift_certificate (name,description,price,duration,create_date) VALUES (?,?,?,?,?)";
 
     @Autowired
-    public GiftCertificateDAOImpl(DataSource dataSource, TagDAO tagDAO) {
+    public GiftCertificateDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
@@ -90,25 +88,17 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     public Optional<GiftCertificate> getGiftCertificateByID(int id) {
         final int FIRST_ELEMENT_INDEX = 0;
 
-        Optional<GiftCertificate> optional;
-        List<GiftCertificate> resultList = jdbcTemplate.query(SELECT_GIFT_BY_ID_SQL,
+        List<GiftCertificate> giftList = jdbcTemplate.query(SELECT_GIFT_BY_ID_SQL,
                 new Object[]{id}, giftCertificateMapper);
 
-        if (resultList.isEmpty()) {
-            optional = Optional.empty();
-        } else {
-            optional = Optional.of(resultList.get(FIRST_ELEMENT_INDEX));
-        }
-
-        return optional;
+        return giftList.isEmpty() ? Optional.empty() : Optional.of(giftList.get(FIRST_ELEMENT_INDEX));
     }
 
     @Override
-    @Transactional
     public List<GiftCertificate> getGiftCertificates() {
         List<GiftCertificate> certificates = jdbcTemplate.query(SELECT_ALL_SQL, giftCertificateMapper);
         for (GiftCertificate certificate : certificates) {
-            certificate.setTagList(jdbcTemplate.query(SELECT_TAGS_SQL, new Object[]{certificate.getId()}, tagMapper));
+            certificate.setTagList(jdbcTemplate.query(SELECT_TAGS_SQL, new Object[]{certificate.getId()}, TagMapper.getInstance()));
         }
         return certificates;
     }

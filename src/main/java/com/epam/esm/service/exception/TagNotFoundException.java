@@ -1,11 +1,10 @@
-package com.epam.esm.service.exception.impl;
+package com.epam.esm.service.exception;
 
-import com.epam.esm.service.exception.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No tag with this id")
-public class TagNotFoundException extends ServiceException {
+public class TagNotFoundException extends RuntimeException {
 
     public TagNotFoundException() {
         super();

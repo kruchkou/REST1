@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class TagDTO {
 
-    private int id;
+    private Integer id;
     private String name;
 
     public int getId() {

@@ -1,22 +1,21 @@
 package com.epam.esm.service;
 
-import com.epam.esm.dto.TagDTO;
-import com.epam.esm.entity.Tag;
-import com.epam.esm.service.exception.ServiceException;
+import com.epam.esm.model.dto.TagDTO;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
+@Component
 public interface TagService {
 
-    public Tag createTag(TagDTO tagDTO) throws ServiceException;
+    TagDTO createTag(TagDTO tagDTO);
 
-    public void deleteTag(int id);
+    void deleteTag(int id);
 
-    public Optional<Tag> getTagByID(int id);
+    TagDTO getTagByID(int id);
 
-    public List<Tag> getTags();
+    List<TagDTO> getTags();
 
-    public Optional<Tag> getTagByName(String name);
+    TagDTO getTagByName(String name);
 
 }

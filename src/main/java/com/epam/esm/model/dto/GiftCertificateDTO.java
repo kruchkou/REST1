@@ -1,9 +1,12 @@
-package com.epam.esm.entity;
+package com.epam.esm.model.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
-public class GiftCertificate {
+public class GiftCertificateDTO {
 
     private int id;
     private String name;
@@ -12,8 +15,8 @@ public class GiftCertificate {
     private int duration;
     private Date createDate;
     private Date lastsUpdateDate;
-
-    private List<Tag> tagList;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<String> tagNames;
 
     public int getId() {
         return id;
@@ -71,26 +74,45 @@ public class GiftCertificate {
         this.lastsUpdateDate = lastsUpdateDate;
     }
 
-    public List<Tag> getTagList() {
-        return tagList;
+    public List<String> getTagNames() {
+        return tagNames;
     }
 
-    public void setTagList(List<Tag> tagList) {
-        this.tagList = tagList;
+    public void setTagNames(List<String> tagName) {
+        this.tagNames = tagName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GiftCertificateDTO that = (GiftCertificateDTO) o;
+        return id == that.id &&
+                price == that.price &&
+                duration == that.duration &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(createDate, that.createDate) &&
+                Objects.equals(lastsUpdateDate, that.lastsUpdateDate) &&
+                Objects.equals(tagNames, that.tagNames);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, price, duration, createDate, lastsUpdateDate, tagNames);
     }
 
     @Override
     public String toString() {
-        return "GiftCertificate{" +
-                "id=" + id +
+        return "GiftCertificateDTO{" +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", duration=" + duration +
                 ", createDate=" + createDate +
                 ", lastsUpdateDate=" + lastsUpdateDate +
-                ", tagList=" + tagList +
+                ", tagName=" + tagNames +
                 '}';
     }
-
 }

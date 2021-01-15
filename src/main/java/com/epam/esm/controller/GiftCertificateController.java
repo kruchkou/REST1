@@ -1,8 +1,9 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.dto.GiftCertificateDTO;
-import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.dao.GiftCertificateDAO;
+import com.epam.esm.model.dto.GiftCertificateDTO;
+import com.epam.esm.service.GiftCertificateService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,38 +12,49 @@ import java.util.List;
 @RequestMapping("giftCertificates")
 public class GiftCertificateController {
 
-    private final GiftCertificateDAO giftCertificateDAO;
+    private final GiftCertificateService giftCertificateService;
 
-    public GiftCertificateController(GiftCertificateDAO giftCertificateDAO) {
-        this.giftCertificateDAO = giftCertificateDAO;
+    @Autowired
+    public GiftCertificateController(GiftCertificateService giftCertificateService) {
+        this.giftCertificateService = giftCertificateService;
     }
 
     @GetMapping
-    List<GiftCertificate> getCertificates() {
-        return giftCertificateDAO.getCertificates();
-    }
-
-    @PostMapping
-    GiftCertificate newGiftCertificate(@RequestBody GiftCertificateDTO giftCertificate) {
-        System.out.println(giftCertificate);
-        return giftCertificateDAO.createGiftCertificate(giftCertificate.getName(),giftCertificate.getDescription(),giftCertificate.getPrice(),giftCertificate.getDuration());
-        //return giftCertificateDAO.getCertificatesByTagName(giftCertificate.getTagNames().get(0)).get(0);
+    List<GiftCertificateDTO> getCertificates() {
+        return giftCertificateService.getCertificates();
     }
 
     @GetMapping("/{id}")
-    GiftCertificate getGiftCertificateByID(@PathVariable int id) {
-        return giftCertificateDAO.getCertificateByID(id);
+    GiftCertificateDTO getGiftCertificateByID(@PathVariable int id) {
+        return giftCertificateService.getGiftCertificateByID(id);
+    }
+
+    @GetMapping(params = {"tagName"})
+    List<GiftCertificateDTO> getGiftCertificateByTagName(@RequestParam(value = "tagNames") String tagNames) {
+        return giftCertificateService.getCertificatesByTagName(tagNames);
+    }
+
+    @GetMapping(params = {"name"})
+    List<GiftCertificateDTO> getGiftCertificateByNameOrDesc(@RequestParam(value = "name") String name) {
+        System.out.println(name);
+        return giftCertificateService.getCertificatesByNameOrDescription(name);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    GiftCertificateDTO newGiftCertificate(@RequestBody GiftCertificateDTO giftCertificateDTO) {
+        System.out.println(giftCertificateDTO);
+        return giftCertificateService.createGiftCertificate(giftCertificateDTO);
     }
 
     @PutMapping("/{id}")
-    GiftCertificate replaceEmployee(@RequestBody GiftCertificate newGift, @PathVariable int id) {
-        giftCertificateDAO.updateCertificate(newGift);
-        return getGiftCertificateByID(newGift.getId());
+    GiftCertificateDTO updateGiftCertificate(@RequestBody GiftCertificateDTO giftCertificateDTO, @PathVariable int id) {
+        return giftCertificateService.updateCertificate(giftCertificateDTO,id);
     }
 
     @DeleteMapping("/{id}")
     void deleteEmployee(@PathVariable int id) {
-        giftCertificateDAO.deleteCertificate(id);
+        giftCertificateService.deleteCertificate(id);
     }
 
 }

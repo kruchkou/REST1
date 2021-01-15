@@ -1,9 +1,10 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.dao.GiftCertificateDAO;
-import com.epam.esm.dao.TagDAO;
-import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.Tag;
+import com.epam.esm.model.dto.TagDTO;
+import com.epam.esm.model.entity.Tag;
+import com.epam.esm.service.TagService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,30 +13,32 @@ import java.util.List;
 @RequestMapping("tags")
 public class TagController {
 
-    private final TagDAO tagDAO;
+    private final TagService tagService;
 
-    public TagController(TagDAO tagDAO) {
-        this.tagDAO = tagDAO;
+    @Autowired
+    public TagController(TagService tagService) {
+        this.tagService = tagService;
     }
 
     @GetMapping
-    List<Tag> getTags() {
-        return tagDAO.getTags();
+    List<TagDTO> getTags() {
+        return tagService.getTags();
     }
 
     @PostMapping
-    Tag newTag(@RequestBody Tag tag) {
-        return tagDAO.createTag(tag.getName());
+    @ResponseStatus(HttpStatus.CREATED)
+    TagDTO newTag(@RequestBody TagDTO tagDTO) {
+        return tagService.createTag(tagDTO);
     }
 
     @GetMapping("/{id}")
-    Tag getGiftCertificateByID(@PathVariable int id) {
-        return tagDAO.getTagByID(id);
+    TagDTO getGiftCertificateByID(@PathVariable int id) {
+        return tagService.getTagByID(id);
     }
 
     @DeleteMapping("/{id}")
     void deleteEmployee(@PathVariable int id) {
-        tagDAO.deleteTag(id);
+        tagService.deleteTag(id);
     }
 
 }

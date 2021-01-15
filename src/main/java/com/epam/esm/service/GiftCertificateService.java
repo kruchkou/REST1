@@ -1,26 +1,23 @@
 package com.epam.esm.service;
 
-import com.epam.esm.dto.GiftCertificateDTO;
-import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.service.exception.ServiceException;
+import com.epam.esm.model.dto.GiftCertificateDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface GiftCertificateService {
 
-    public int deleteCertificate(int id);
+    void deleteCertificate(int id);
 
-    public int updateCertificate(GiftCertificateDTO giftCertificateDTO, int id);
+    GiftCertificateDTO getGiftCertificateByID(int id);
 
-    public GiftCertificate createGiftCertificate(GiftCertificateDTO giftCertificateDTO) throws ServiceException;
+    GiftCertificateDTO createGiftCertificate(GiftCertificateDTO giftCertificateDTO);
 
-    public List<GiftCertificate> getCertificates();
+    GiftCertificateDTO updateCertificate(GiftCertificateDTO giftCertificateDTO, int id);
 
-    public List<GiftCertificate> getCertificatesByTagName(String tagName);
+    List<GiftCertificateDTO> getCertificates();
 
-    public Optional<GiftCertificate> getGiftCertificateByID(int id);
+    List<GiftCertificateDTO> getCertificatesByTagName(String tagName);
 
-    public List<GiftCertificate> getCertificatesByNameOrDescription(String searchText);
+    List<GiftCertificateDTO> getCertificatesByNameOrDescription(String searchText);
 
 }

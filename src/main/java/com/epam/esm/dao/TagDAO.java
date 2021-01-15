@@ -1,20 +1,26 @@
 package com.epam.esm.dao;
 
-import com.epam.esm.entity.Tag;
+import com.epam.esm.model.entity.Tag;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public interface TagDAO {
 
-    public Tag createTag(String name);
+    void deleteTag(int id);
 
-    public void deleteTag(int id);
+    void insertGiftTag(int giftID, int tagID);
 
-    public Optional<Tag> getTagByID(int id);
+    Tag createTag(String name);
 
-    public List<Tag> getTags();
+    Optional<Tag> getTagByID(int id);
 
-    public Optional<Tag> getTagByName(String name);
+    List<Tag> getTags();
+
+    Optional<Tag> getTagByName(String name);
+
+    List<Tag> getTagListByGiftCertificateID(int id);
 
 }

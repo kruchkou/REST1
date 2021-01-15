@@ -1,24 +1,26 @@
 package com.epam.esm.dao;
 
-import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.model.entity.GiftCertificate;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public interface GiftCertificateDAO {
 
-    public int deleteCertificate(int id);
+    public void deleteGiftCertificate(int id);
 
-    public int updateCertificate(GiftCertificate updatedCertificate);
+    public GiftCertificate updateGiftCertificate(GiftCertificate updatedCertificate, int id);
 
     public GiftCertificate createGiftCertificate(String name, String description, int price, int duration);
 
-    public Optional<GiftCertificate> getCertificateByID(int id);
+    public Optional<GiftCertificate> getGiftCertificateByID(int id);
 
-    public List<GiftCertificate> getCertificates();
+    public List<GiftCertificate> getGiftCertificates();
 
-    public List<GiftCertificate> getCertificatesByTagName(String tagName);
+    public List<GiftCertificate> getGiftCertificatesByTagName(String tagName);
 
-    public List<GiftCertificate> getCertificatesByNameOrDescription(String searchText);
+    public List<GiftCertificate> getGiftCertificatesByNameOrDescription(String searchText);
 
 }

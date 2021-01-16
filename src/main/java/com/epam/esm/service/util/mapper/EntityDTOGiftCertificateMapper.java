@@ -3,7 +3,9 @@ package com.epam.esm.service.util.mapper;
 import com.epam.esm.model.dto.GiftCertificateDTO;
 import com.epam.esm.model.entity.GiftCertificate;
 
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +31,8 @@ public final class EntityDTOGiftCertificateMapper {
     }
 
     public static GiftCertificateDTO toDTO(GiftCertificate giftCertificate) {
-        final LocalDateTime createDateLocalDateTime = LocalDateTime.ofInstant(giftCertificate.getCreateDate(),ZoneOffset.UTC);
-        final LocalDateTime lastUpdateDateLocalDateTime = LocalDateTime.ofInstant(giftCertificate.getLastsUpdateDate(),ZoneOffset.UTC);
+        final LocalDateTime createDateLocalDateTime = LocalDateTime.ofInstant(giftCertificate.getCreateDate(), ZoneOffset.UTC);
+        final LocalDateTime lastUpdateDateLocalDateTime = LocalDateTime.ofInstant(giftCertificate.getLastsUpdateDate(), ZoneOffset.UTC);
         final GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO();
 
         giftCertificateDTO.setId(giftCertificate.getId());

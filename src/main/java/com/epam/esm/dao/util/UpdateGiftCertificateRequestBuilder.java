@@ -1,7 +1,7 @@
 package com.epam.esm.dao.util;
 
-import com.epam.esm.model.entity.GiftCertificate;
-import com.epam.esm.model.util.UpdateGiftCertificateRequest;
+import com.epam.esm.model.util.GiftCertificateRequest;
+import com.epam.esm.model.util.UpdateGiftCertificateQueryParameter;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -32,12 +32,12 @@ public class UpdateGiftCertificateRequestBuilder {
         return instance;
     }
 
-    public UpdateGiftCertificateRequest build(GiftCertificate giftCertificate) {
-        String name = giftCertificate.getName();
-        String description = giftCertificate.getDescription();
-        Integer price = giftCertificate.getPrice();
-        Integer duration = giftCertificate.getDuration();
-        Instant lastUpdateInstant = giftCertificate.getLastsUpdateDate();
+    public GiftCertificateRequest build(UpdateGiftCertificateQueryParameter updateParameter) {
+        String name = updateParameter.getName();
+        String description = updateParameter.getDescription();
+        Integer price = updateParameter.getPrice();
+        Integer duration = updateParameter.getDuration();
+        Instant instant = updateParameter.getInstant();
 
         if (!(name == null)) {
             setName(name);
@@ -51,13 +51,14 @@ public class UpdateGiftCertificateRequestBuilder {
         if (!(duration == null)) {
             setDuration(duration);
         }
-        if (!(lastUpdateInstant == null)) {
-            setLastUpdateDate(lastUpdateInstant);
+        if (!(instant == null)) {
+            setLastUpdateDate(instant);
         }
+
         return build();
     }
 
-    public UpdateGiftCertificateRequest build() {
+    public GiftCertificateRequest build() {
         ArrayList<String> sqlParamList = new ArrayList<>();
         ArrayList<Object> valueParamList = new ArrayList<>();
 
@@ -71,36 +72,31 @@ public class UpdateGiftCertificateRequestBuilder {
         final String SQL_PARAM_QUERY = String.join(SPLIT_PARAM_STRING, sqlParamList);
         final String REQUEST_SQL = sqlRequestBuilder.append(UPDATE_SQL).append(SQL_PARAM_QUERY).append(FINAL_SQL).toString();
 
-        UpdateGiftCertificateRequest updateGiftCertificateQuery = new UpdateGiftCertificateRequest(REQUEST_SQL, params);
+        GiftCertificateRequest giftCertificateRequest = new GiftCertificateRequest(REQUEST_SQL, params);
 
         clear();
-        return updateGiftCertificateQuery;
+        return giftCertificateRequest;
     }
 
 
-    public UpdateGiftCertificateRequestBuilder setName(String name) {
+    public void setName(String name) {
         paramMap.put(ADD_NAME_SQL, name);
-        return this;
     }
 
-    public UpdateGiftCertificateRequestBuilder setLastUpdateDate(Instant lastUpdateDate) {
+    public void setLastUpdateDate(Instant lastUpdateDate) {
         paramMap.put(ADD_LAST_UPDATE_DATE, lastUpdateDate);
-        return this;
     }
 
-    public UpdateGiftCertificateRequestBuilder setDescription(String description) {
+    public void setDescription(String description) {
         paramMap.put(ADD_DESCRIPTION, description);
-        return this;
     }
 
-    public UpdateGiftCertificateRequestBuilder setPrice(int price) {
+    public void setPrice(Integer price) {
         paramMap.put(ADD_PRICE, price);
-        return this;
     }
 
-    public UpdateGiftCertificateRequestBuilder setDuration(int duration) {
+    public void setDuration(Integer duration) {
         paramMap.put(ADD_DURATION, duration);
-        return this;
     }
 
     private void clear() {

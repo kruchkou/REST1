@@ -1,6 +1,5 @@
 package com.epam.esm.model.entity;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;

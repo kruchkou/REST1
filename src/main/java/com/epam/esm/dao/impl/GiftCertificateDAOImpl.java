@@ -5,7 +5,7 @@ import com.epam.esm.dao.mapper.GiftCertificateMapper;
 import com.epam.esm.dao.mapper.TagMapper;
 import com.epam.esm.dao.util.UpdateGiftCertificateRequestBuilder;
 import com.epam.esm.model.entity.GiftCertificate;
-import com.epam.esm.model.util.UpdateGiftCertificateRequest;
+import com.epam.esm.model.util.GiftCertificateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -38,9 +38,6 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     private final static String SELECT_ALL_SQL = "SELECT * FROM gift_certificate";
 
-    private final static String SELECT_TAGS_SQL = "SELECT * FROM tag JOIN gift_tag gt on tag.id = gt.tag " +
-            "where gt.gift = ?";
-
     private final static String SELECT_GIFT_BY_ID_SQL = "SELECT * FROM gift_certificate WHERE (id = ?)";
 
     private final static String DELETE_SQL = "DELETE FROM gift_certificate WHERE id = ?";
@@ -52,6 +49,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     public GiftCertificateDAOImpl(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
+
 
     @Override
     public GiftCertificate createGiftCertificate(String name, String description, int price, int duration) {
@@ -70,20 +68,16 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
             return ps;
         }, keyHolder);
 
-        return getGiftCertificateByID(keyHolder.getKey().intValue()).get();
+        int id = (int) keyHolder.getKeys().get("id");
+        return getGiftCertificateByID(id).get();
     }
 
     @Override
-    public GiftCertificate updateGiftCertificate(GiftCertificate updatedCertificate, int id) {
-        UpdateGiftCertificateRequestBuilder updateBuilder = UpdateGiftCertificateRequestBuilder.getInstance();
-        updatedCertificate.setLastsUpdateDate(Instant.now());
-        UpdateGiftCertificateRequest updateGiftCertificateRequest = updateBuilder.build(updatedCertificate);
+    public GiftCertificate updateGiftCertificate(GiftCertificateRequest giftCertificateRequest, int id) {
+        jdbcTemplate.update(giftCertificateRequest.getRequest(),
+                giftCertificateRequest.getParams(),id);
 
-        jdbcTemplate.update(updateGiftCertificateRequest.getRequest(),
-                updateGiftCertificateRequest.getParams(),
-                id);
-
-        return getGiftCertificateByID(updatedCertificate.getId()).get();
+        return getGiftCertificateByID(id).get();
     }
 
     @Override
@@ -103,13 +97,13 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     @Override
     public List<GiftCertificate> getGiftCertificates() {
-        List<GiftCertificate> certificates = jdbcTemplate.query(SELECT_ALL_SQL, giftCertificateMapper);
+        return jdbcTemplate.query(SELECT_ALL_SQL, giftCertificateMapper);
+    }
 
-        certificates.forEach(certificate ->
-                certificate.setTagList(jdbcTemplate.query(
-                        SELECT_TAGS_SQL, new Object[]{certificate.getId()}, TagMapper.getInstance())));
-
-        return certificates;
+    @Override
+    public List<GiftCertificate> getGiftCertificates(GiftCertificateRequest giftCertificateRequest) {
+        return jdbcTemplate.query(
+                giftCertificateRequest.getRequest(), giftCertificateRequest.getParams(), GiftCertificateMapper.getInstance());
     }
 
     @Override

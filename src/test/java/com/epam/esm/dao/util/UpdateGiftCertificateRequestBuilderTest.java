@@ -1,6 +1,7 @@
 package com.epam.esm.dao.util;
 
-import com.epam.esm.model.util.UpdateGiftCertificateRequest;
+import com.epam.esm.model.util.GiftCertificateRequest;
+import com.epam.esm.model.util.UpdateGiftCertificateQueryParameter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UpdateGiftCertificateRequestBuilderTest {
 
-    private final static String CORRECT_SQL = "UPDATE gift_certificate SET name = ?, description = ?, price = ?, duration = ?, last_update_date = ? WHERE id = ?";
+    private final static String CORRECT_SQL = "UPDATE gift_certificate SET name = ?, description = ?, price = ?, " +
+            "duration = ?, last_update_date = ? WHERE id = ?";
     private final static String TEST_NAME = "test_name";
     private final static String TEST_DESCRIPTION = "test_desc";
     private final static int TEST_PRICE = 10;
@@ -30,18 +32,19 @@ class UpdateGiftCertificateRequestBuilderTest {
 
     @Test
     public void testBuildMethod() {
-        UpdateGiftCertificateRequest testRequest = updateGiftCertificateQueryBuilder
-                .setName(TEST_NAME)
-                .setDescription(TEST_DESCRIPTION)
-                .setPrice(FAKE_PRICE)
-                .setDuration(TEST_DURATION)
-                .setPrice(TEST_PRICE)
-                .setDuration(TEST_DURATION)
-                .setLastUpdateDate(LAST_UPDATE_INSTANT)
-                .build();
+        UpdateGiftCertificateQueryParameter updateParameter = new UpdateGiftCertificateQueryParameter();
+        updateParameter.setName(TEST_NAME);
+        updateParameter.setDescription(TEST_DESCRIPTION);
+        updateParameter.setPrice(FAKE_PRICE);
+        updateParameter.setPrice(TEST_PRICE);
+        updateParameter.setDuration(TEST_DURATION);
+        updateParameter.setInstant(LAST_UPDATE_INSTANT);
 
-        assertEquals(CORRECT_SQL,testRequest.getRequest());
-        assertArrayEquals(correctElements,testRequest.getParams());
+        GiftCertificateRequest testRequest = updateGiftCertificateQueryBuilder
+                .build(updateParameter);
+
+        assertEquals(CORRECT_SQL, testRequest.getRequest());
+        assertArrayEquals(correctElements, testRequest.getParams());
     }
 
 }

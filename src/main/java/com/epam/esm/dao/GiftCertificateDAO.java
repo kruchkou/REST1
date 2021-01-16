@@ -1,6 +1,7 @@
 package com.epam.esm.dao;
 
 import com.epam.esm.model.entity.GiftCertificate;
+import com.epam.esm.model.util.GiftCertificateRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,13 +10,15 @@ public interface GiftCertificateDAO {
 
     public void deleteGiftCertificate(int id);
 
-    public GiftCertificate updateGiftCertificate(GiftCertificate updatedCertificate, int id);
+    public GiftCertificate updateGiftCertificate(GiftCertificateRequest giftCertificateRequest, int id);
 
     public GiftCertificate createGiftCertificate(String name, String description, int price, int duration);
 
     public Optional<GiftCertificate> getGiftCertificateByID(int id);
 
     public List<GiftCertificate> getGiftCertificates();
+
+    public List<GiftCertificate> getGiftCertificates(GiftCertificateRequest giftCertificateRequest);
 
     public List<GiftCertificate> getGiftCertificatesByTagName(String tagName);
 

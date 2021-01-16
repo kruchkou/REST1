@@ -1,7 +1,10 @@
 package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.GiftCertificateDAO;
+import com.epam.esm.dao.util.UpdateGiftCertificateRequestBuilder;
 import com.epam.esm.model.entity.GiftCertificate;
+import com.epam.esm.model.util.GiftCertificateRequest;
+import com.epam.esm.model.util.UpdateGiftCertificateQueryParameter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,10 +71,12 @@ class GiftCertificateDAOImplTest {
 
         GiftCertificate gift = giftCertificateDAO.getGiftCertificateByID(TESTED_ID).get();
 
-        GiftCertificate updatedGift = new GiftCertificate();
-        updatedGift.setPrice(NEW_TEST_PRICE);
+        UpdateGiftCertificateQueryParameter updateParameter = new UpdateGiftCertificateQueryParameter();
+        updateParameter.setPrice(NEW_TEST_PRICE);
 
-        updatedGift = giftCertificateDAO.updateGiftCertificate(updatedGift,TESTED_ID);
+        GiftCertificateRequest updateRequest = UpdateGiftCertificateRequestBuilder.getInstance().build(updateParameter);
+
+        GiftCertificate updatedGift = giftCertificateDAO.updateGiftCertificate(updateRequest,TESTED_ID);
 
         assertEquals(NEW_TEST_PRICE, updatedGift.getPrice());
         assertNotEquals(gift.getLastsUpdateDate(),updatedGift.getLastsUpdateDate());

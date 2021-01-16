@@ -1,6 +1,8 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.model.dto.GiftCertificateDTO;
+import com.epam.esm.model.util.GetGiftCertificateQueryParameter;
+import com.epam.esm.model.util.UpdateGiftCertificateQueryParameter;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,8 @@ public class GiftCertificateController {
 
     private final GiftCertificateService giftCertificateService;
 
+    private final static String EMPTY_STRING = "";
+
     @Autowired
     public GiftCertificateController(GiftCertificateService giftCertificateService) {
         this.giftCertificateService = giftCertificateService;
@@ -25,19 +29,37 @@ public class GiftCertificateController {
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
     public GiftCertificateDTO getGiftCertificateByID(@PathVariable int id) {
         return giftCertificateService.getGiftCertificateByID(id);
     }
 
-    @GetMapping(params = {"tagName"})
-    public List<GiftCertificateDTO> getGiftCertificateByTagName(@RequestParam(value = "tagNames") String tagNames) {
-        return giftCertificateService.getCertificatesByTagName(tagNames);
-    }
+    @GetMapping(params = {"name", "description", "tagName", "sortBy", "sortOrientation"})
+    public List<GiftCertificateDTO> getGiftCertificateByAllParams(
+            @RequestParam(value = "tagName", defaultValue = "") String tagName,
+            @RequestParam(value = "name", defaultValue = "") String name,
+            @RequestParam(value = "description", defaultValue = "") String description,
+            @RequestParam(value = "sortBy", defaultValue = "") String sortBy,
+            @RequestParam(value = "sortOrientation", defaultValue = "") String sortOrientation) {
 
-    @GetMapping(params = {"name"})
-    public List<GiftCertificateDTO> getGiftCertificateByNameOrDesc(@RequestParam(value = "name") String name) {
-        return giftCertificateService.getCertificatesByNameOrDescription(name);
+        GetGiftCertificateQueryParameter giftCertificateQueryParameter = new GetGiftCertificateQueryParameter();
+
+        if (!tagName.equals(EMPTY_STRING)) {
+            giftCertificateQueryParameter.setTagName(tagName);
+        }
+        if (!name.equals(EMPTY_STRING)) {
+            giftCertificateQueryParameter.setName(name);
+        }
+        if (!description.equals(EMPTY_STRING)) {
+            giftCertificateQueryParameter.setDescription(description);
+        }
+        if (!sortBy.equals(EMPTY_STRING)) {
+            giftCertificateQueryParameter.setSortBy(sortBy);
+        }
+        if (!sortOrientation.equals(EMPTY_STRING)) {
+            giftCertificateQueryParameter.setSortOrientation(sortOrientation);
+        }
+
+        return giftCertificateService.getCertificates(giftCertificateQueryParameter);
     }
 
     @PostMapping
@@ -47,8 +69,8 @@ public class GiftCertificateController {
     }
 
     @PutMapping("/{id}")
-    public GiftCertificateDTO updateGiftCertificate(@RequestBody GiftCertificateDTO giftCertificateDTO, @PathVariable int id) {
-        return giftCertificateService.updateCertificate(giftCertificateDTO, id);
+    public GiftCertificateDTO updateGiftCertificate(@RequestBody UpdateGiftCertificateQueryParameter updateParameter, @PathVariable int id) {
+        return giftCertificateService.updateCertificate(updateParameter, id);
     }
 
     @DeleteMapping("/{id}")

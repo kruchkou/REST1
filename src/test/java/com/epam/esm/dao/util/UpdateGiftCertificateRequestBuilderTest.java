@@ -37,7 +37,8 @@ class UpdateGiftCertificateRequestBuilderTest {
                 .setDuration(TEST_DURATION)
                 .setPrice(TEST_PRICE)
                 .setDuration(TEST_DURATION)
-                .build(LAST_UPDATE_INSTANT);
+                .setLastUpdateDate(LAST_UPDATE_INSTANT)
+                .build();
 
         assertEquals(CORRECT_SQL,testRequest.getRequest());
         assertArrayEquals(correctElements,testRequest.getParams());

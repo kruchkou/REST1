@@ -23,7 +23,6 @@ import java.util.Optional;
 @Repository
 public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
-    private final DataSource dataSource;
     private final JdbcTemplate jdbcTemplate;
 
     private final static GiftCertificateMapper giftCertificateMapper = GiftCertificateMapper.getInstance();
@@ -46,15 +45,11 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     private final static String DELETE_SQL = "DELETE FROM gift_certificate WHERE id = ?";
 
-    private final static String UPDATE_SQL = "UPDATE gift_certificate SET " +
-            "name = ?, description = ?, price = ?, duration = ?, last_update_date = ? WHERE id = ?";
-
     private final static String CREATE_SQL = "INSERT INTO gift_certificate" +
             " (name, description, price, duration, create_date, last_update_date) VALUES (?,?,?,?,?,?)";
 
     @Autowired
     public GiftCertificateDAOImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
@@ -81,7 +76,8 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     @Override
     public GiftCertificate updateGiftCertificate(GiftCertificate updatedCertificate, int id) {
         UpdateGiftCertificateRequestBuilder updateBuilder = UpdateGiftCertificateRequestBuilder.getInstance();
-        UpdateGiftCertificateRequest updateGiftCertificateRequest = updateBuilder.build(updatedCertificate, Instant.now());
+        updatedCertificate.setLastsUpdateDate(Instant.now());
+        UpdateGiftCertificateRequest updateGiftCertificateRequest = updateBuilder.build(updatedCertificate);
 
         jdbcTemplate.update(updateGiftCertificateRequest.getRequest(),
                 updateGiftCertificateRequest.getParams(),

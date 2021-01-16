@@ -32,11 +32,12 @@ public class UpdateGiftCertificateRequestBuilder {
         return instance;
     }
 
-    public UpdateGiftCertificateRequest build(GiftCertificate giftCertificate, Instant lastUpdateInstant) {
+    public UpdateGiftCertificateRequest build(GiftCertificate giftCertificate) {
         String name = giftCertificate.getName();
         String description = giftCertificate.getDescription();
         Integer price = giftCertificate.getPrice();
         Integer duration = giftCertificate.getDuration();
+        Instant lastUpdateInstant = giftCertificate.getLastsUpdateDate();
 
         if (!(name == null)) {
             setName(name);
@@ -48,22 +49,22 @@ public class UpdateGiftCertificateRequestBuilder {
             setPrice(price);
         }
         if (!(duration == null)) {
-            setPrice(duration);
+            setDuration(duration);
         }
-        return build(lastUpdateInstant);
+        if (!(lastUpdateInstant == null)) {
+            setLastUpdateDate(lastUpdateInstant);
+        }
+        return build();
     }
 
-    public UpdateGiftCertificateRequest build(Instant lastUpdateDate) {
+    public UpdateGiftCertificateRequest build() {
         ArrayList<String> sqlParamList = new ArrayList<>();
         ArrayList<Object> valueParamList = new ArrayList<>();
-
-        setLastUpdateDate(lastUpdateDate);
 
         paramMap.forEach((key, value) -> {
             sqlParamList.add(key);
             valueParamList.add(value);
         });
-
 
         Object[] params = valueParamList.toArray();
 
@@ -82,8 +83,9 @@ public class UpdateGiftCertificateRequestBuilder {
         return this;
     }
 
-    private void setLastUpdateDate(Instant lastUpdateDate) {
+    public UpdateGiftCertificateRequestBuilder setLastUpdateDate(Instant lastUpdateDate) {
         paramMap.put(ADD_LAST_UPDATE_DATE, lastUpdateDate);
+        return this;
     }
 
     public UpdateGiftCertificateRequestBuilder setDescription(String description) {

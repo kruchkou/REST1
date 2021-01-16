@@ -14,7 +14,6 @@ import java.util.Optional;
 @Repository
 public class TagDAOImpl implements TagDAO {
 
-    private final DataSource dataSource;
     private final JdbcTemplate jdbcTemplate;
 
     private final static TagMapper tagMapper = TagMapper.getInstance();
@@ -36,7 +35,6 @@ public class TagDAOImpl implements TagDAO {
 
     @Autowired
     public TagDAOImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 

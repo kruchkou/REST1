@@ -7,9 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,9 +21,8 @@ class EntityDTOGiftCertificateMapperTest {
     private final static int TEST_DURATION = 20;
     private final static Instant TEST_CREATE_DATE_INSTANT = Instant.now();
     private final static Instant TEST_LAST_UPDATE_DATE_INSTANT = Instant.now();
-    private final static String ZONE_ID_MINSK = "Europe/Minsk";
-    private final static ZonedDateTime TEST_CREATE_DATE_ZONED_DATE_TIME = TEST_CREATE_DATE_INSTANT.atZone(ZoneId.of(ZONE_ID_MINSK));
-    private final static ZonedDateTime TEST_LAST_UPDATE_DATE_ZONED_DATE_TIME = TEST_LAST_UPDATE_DATE_INSTANT.atZone(ZoneId.of(ZONE_ID_MINSK));
+    private final static LocalDateTime TEST_CREATE_DATE_LOCAL_DATE_TIME = LocalDateTime.ofInstant(TEST_CREATE_DATE_INSTANT,ZoneOffset.UTC);
+    private final static LocalDateTime TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME = LocalDateTime.ofInstant(TEST_LAST_UPDATE_DATE_INSTANT,ZoneOffset.UTC);
     private GiftCertificate giftCertificate;
     private GiftCertificateDTO giftCertificateDTO;
 
@@ -47,8 +44,8 @@ class EntityDTOGiftCertificateMapperTest {
         giftCertificateDTO.setDescription(TEST_DESCRIPTION);
         giftCertificateDTO.setPrice(TEST_PRICE);
         giftCertificateDTO.setDuration(TEST_DURATION);
-        giftCertificateDTO.setCreateDate(TEST_CREATE_DATE_ZONED_DATE_TIME);
-        giftCertificateDTO.setLastsUpdateDate(TEST_LAST_UPDATE_DATE_ZONED_DATE_TIME);
+        giftCertificateDTO.setCreateDate(TEST_CREATE_DATE_LOCAL_DATE_TIME);
+        giftCertificateDTO.setLastsUpdateDate(TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME);
     }
 
     @Test
@@ -71,7 +68,7 @@ class EntityDTOGiftCertificateMapperTest {
         assertEquals(TEST_DESCRIPTION, testedGiftCertificateDTO.getDescription());
         assertEquals(TEST_PRICE, testedGiftCertificateDTO.getPrice());
         assertEquals(TEST_DURATION, testedGiftCertificateDTO.getDuration());
-        assertEquals(TEST_CREATE_DATE_ZONED_DATE_TIME, testedGiftCertificateDTO.getCreateDate());
-        assertEquals(TEST_LAST_UPDATE_DATE_ZONED_DATE_TIME, testedGiftCertificateDTO.getLastsUpdateDate());
+        assertEquals(TEST_CREATE_DATE_LOCAL_DATE_TIME, testedGiftCertificateDTO.getCreateDate());
+        assertEquals(TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME, testedGiftCertificateDTO.getLastsUpdateDate());
     }
 }

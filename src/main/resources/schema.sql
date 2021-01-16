@@ -5,8 +5,8 @@ CREATE TABLE gift_certificate
     description      VARCHAR(200) NOT NULL,
     price            INT          NOT NULL,
     duration         INT          NOT NULL,
-    create_date      DATETIME     NOT NULL,
-    last_update_date DATETIME     NULL,
+    create_date      TIMESTAMP     NOT NULL DEFAULT NOW(),
+    last_update_date TIMESTAMP     NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id)
 );
 

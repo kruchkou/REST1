@@ -17,7 +17,7 @@ public class GiftCertificate {
 
     private List<Tag> tagList;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -41,7 +41,7 @@ public class GiftCertificate {
         this.description = description;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
@@ -49,7 +49,7 @@ public class GiftCertificate {
         this.price = price;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
@@ -86,11 +86,11 @@ public class GiftCertificate {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GiftCertificate that = (GiftCertificate) o;
-        return id == that.id &&
-                price == that.price &&
-                duration == that.duration &&
+        return Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(description, that.description) &&
+                Objects.equals(price, that.price) &&
+                Objects.equals(duration, that.duration) &&
                 Objects.equals(createDate, that.createDate) &&
                 Objects.equals(lastsUpdateDate, that.lastsUpdateDate) &&
                 Objects.equals(tagList, that.tagList);
@@ -114,4 +114,5 @@ public class GiftCertificate {
                 ", tagList=" + tagList +
                 '}';
     }
+
 }

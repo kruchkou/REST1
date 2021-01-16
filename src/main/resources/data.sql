@@ -1,7 +1,7 @@
-INSERT INTO gift_certificate (name, description, price, duration, create_date)
-values ('First Cert', 'This is first certificate', 50, 10, '2020-01-12 20:15:00');
-INSERT INTO gift_certificate (name, description, price, duration, create_date)
-values ('Second Cert', 'That is second certificate', 100, 20, '2020-01-12 20:25:00');
+INSERT INTO gift_certificate (name, description, price, duration)
+values ('First Cert', 'This is first certificate', 50, 10);
+INSERT INTO gift_certificate (name, description, price, duration)
+values ('Second Cert', 'That is second certificate', 100, 20);
 
 INSERT INTO tag (name)
 values ('first');

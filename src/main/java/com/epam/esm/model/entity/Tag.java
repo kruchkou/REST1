@@ -7,7 +7,7 @@ public class Tag {
     private Integer id;
     private String name;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -28,7 +28,7 @@ public class Tag {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tag tag = (Tag) o;
-        return id == tag.id &&
+        return Objects.equals(id, tag.id) &&
                 Objects.equals(name, tag.name);
     }
 

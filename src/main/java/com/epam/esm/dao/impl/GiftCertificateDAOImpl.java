@@ -3,7 +3,9 @@ package com.epam.esm.dao.impl;
 import com.epam.esm.dao.GiftCertificateDAO;
 import com.epam.esm.dao.mapper.GiftCertificateMapper;
 import com.epam.esm.dao.mapper.TagMapper;
+import com.epam.esm.dao.util.UpdateGiftCertificateRequestBuilder;
 import com.epam.esm.model.entity.GiftCertificate;
+import com.epam.esm.model.util.UpdateGiftCertificateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -11,9 +13,10 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,7 +61,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     @Override
     public GiftCertificate createGiftCertificate(String name, String description, int price, int duration) {
         final KeyHolder keyHolder = new GeneratedKeyHolder();
-        final Date CURRENT_DATETIME = new java.sql.Date(new java.util.Date().getTime());
+        final Timestamp CURRENT_TIMESTAMP = Timestamp.from(Instant.now());
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection
@@ -67,8 +70,8 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
             ps.setString(ParamColumn.DESC_PARAM_ID, description);
             ps.setInt(ParamColumn.PRICE_PARAM_ID, price);
             ps.setInt(ParamColumn.DURATION_PARAM_ID, duration);
-            ps.setDate(ParamColumn.CREATE_DATE_PARAM_ID, CURRENT_DATETIME);
-            ps.setDate(ParamColumn.LAST_UPDATE_DATE_PARAM_ID, CURRENT_DATETIME);
+            ps.setTimestamp(ParamColumn.CREATE_DATE_PARAM_ID, CURRENT_TIMESTAMP);
+            ps.setTimestamp(ParamColumn.LAST_UPDATE_DATE_PARAM_ID, CURRENT_TIMESTAMP);
             return ps;
         }, keyHolder);
 
@@ -77,14 +80,13 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     @Override
     public GiftCertificate updateGiftCertificate(GiftCertificate updatedCertificate, int id) {
-        final Date CURRENT_DATETIME = new java.sql.Date(new java.util.Date().getTime());
-        jdbcTemplate.update(UPDATE_SQL,
-                updatedCertificate.getName(),
-                updatedCertificate.getDescription(),
-                updatedCertificate.getPrice(),
-                updatedCertificate.getDuration(),
-                CURRENT_DATETIME,
+        UpdateGiftCertificateRequestBuilder updateBuilder = UpdateGiftCertificateRequestBuilder.getInstance();
+        UpdateGiftCertificateRequest updateGiftCertificateRequest = updateBuilder.build(updatedCertificate, Instant.now());
+
+        jdbcTemplate.update(updateGiftCertificateRequest.getRequest(),
+                updateGiftCertificateRequest.getParams(),
                 id);
+
         return getGiftCertificateByID(updatedCertificate.getId()).get();
     }
 

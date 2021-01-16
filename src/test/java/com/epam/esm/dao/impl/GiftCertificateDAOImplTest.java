@@ -68,9 +68,10 @@ class GiftCertificateDAOImplTest {
 
         GiftCertificate gift = giftCertificateDAO.getGiftCertificateByID(TESTED_ID).get();
 
-        gift.setPrice(NEW_TEST_PRICE);
+        GiftCertificate updatedGift = new GiftCertificate();
+        updatedGift.setPrice(NEW_TEST_PRICE);
 
-        GiftCertificate updatedGift = giftCertificateDAO.updateGiftCertificate(gift,gift.getId());
+        updatedGift = giftCertificateDAO.updateGiftCertificate(updatedGift,TESTED_ID);
 
         assertEquals(NEW_TEST_PRICE, updatedGift.getPrice());
         assertNotEquals(gift.getLastsUpdateDate(),updatedGift.getLastsUpdateDate());

@@ -14,11 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 class EntityDTOGiftCertificateMapperTest {
 
-    private final static int TEST_ID = 3;
+    private final static Integer TEST_ID = 3;
     private final static String TEST_NAME = "test name";
     private final static String TEST_DESCRIPTION = "test description";
-    private final static int TEST_PRICE = 10;
-    private final static int TEST_DURATION = 20;
+    private final static Integer TEST_PRICE = 10;
+    private final static Integer TEST_DURATION = 20;
     private final static Instant TEST_CREATE_DATE_INSTANT = Instant.now();
     private final static Instant TEST_LAST_UPDATE_DATE_INSTANT = Instant.now();
     private final static LocalDateTime TEST_CREATE_DATE_LOCAL_DATE_TIME = LocalDateTime.ofInstant(TEST_CREATE_DATE_INSTANT,ZoneOffset.UTC);

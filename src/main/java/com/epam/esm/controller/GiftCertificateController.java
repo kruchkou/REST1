@@ -35,11 +35,11 @@ public class GiftCertificateController {
 
     @GetMapping(params = {"name", "description", "tagName", "sortBy", "sortOrientation"})
     public List<GiftCertificateDTO> getGiftCertificateByAllParams(
-            @RequestParam(value = "tagName", defaultValue = "") String tagName,
-            @RequestParam(value = "name", defaultValue = "") String name,
-            @RequestParam(value = "description", defaultValue = "") String description,
-            @RequestParam(value = "sortBy", defaultValue = "") String sortBy,
-            @RequestParam(value = "sortOrientation", defaultValue = "") String sortOrientation) {
+            @RequestParam(value = "tagName", defaultValue = EMPTY_STRING) String tagName,
+            @RequestParam(value = "name", defaultValue = EMPTY_STRING) String name,
+            @RequestParam(value = "description", defaultValue = EMPTY_STRING) String description,
+            @RequestParam(value = "sortBy", defaultValue = EMPTY_STRING) String sortBy,
+            @RequestParam(value = "sortOrientation", defaultValue = EMPTY_STRING) String sortOrientation) {
 
         GetGiftCertificateQueryParameter giftCertificateQueryParameter = new GetGiftCertificateQueryParameter();
 

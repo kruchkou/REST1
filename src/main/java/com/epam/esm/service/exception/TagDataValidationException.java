@@ -1,10 +1,14 @@
 package com.epam.esm.service.exception;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class TagDataValidationException extends RuntimeException {
+
+    private final static HttpStatus HTTP_STATUS = HttpStatus.BAD_REQUEST;
+
+    public HttpStatus getHttpStatus() {
+        return HTTP_STATUS;
+    }
 
     public TagDataValidationException() {
         super();

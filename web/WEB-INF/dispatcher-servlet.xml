@@ -11,5 +11,14 @@
     <context:component-scan base-package="com.epam.esm"/>
     <mvc:annotation-driven />
 
+    <mvc:view-resolvers>
+        <mvc:content-negotiation>
+            <mvc:default-views>
+                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
+            </mvc:default-views>
+        </mvc:content-negotiation>
+    </mvc:view-resolvers>
+
+
 
 </beans>

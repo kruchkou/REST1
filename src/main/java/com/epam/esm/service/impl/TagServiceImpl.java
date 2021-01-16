@@ -20,8 +20,8 @@ public class TagServiceImpl implements TagService {
     private final TagDAO tagDAO;
 
     private static final String NO_TAGS_FOUND = "No tags found";
-    private static final String NO_TAG_WITH_ID_FOUND = "No tag with %d id found";
-    private static final String NO_TAG_WITH_NAME_FOUND = "No tag with %s name found";
+    private static final String NO_TAG_WITH_ID_FOUND = "No tag with id: %d found";
+    private static final String NO_TAG_WITH_NAME_FOUND = "No tag with name: %s found";
     private static final String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
 
     public TagServiceImpl(TagDAO tagDAO) {

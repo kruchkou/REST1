@@ -24,7 +24,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final GiftCertificateDAO giftCertificateDAO;
     private final TagDAO tagDAO;
 
-    private static final String NO_GIFT_CERTIFICATE_WITH_ID_FOUND = "No certificate with %d id found";
+    private static final String NO_GIFT_CERTIFICATE_WITH_ID_FOUND = "No certificate with id: %d found";
     private static final String NO_GIFT_CERTIFICATES_FOUND = "No certificates found";
     private static final String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
 

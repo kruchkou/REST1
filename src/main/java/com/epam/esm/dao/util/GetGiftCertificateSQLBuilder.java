@@ -1,16 +1,16 @@
 package com.epam.esm.dao.util;
 
 import com.epam.esm.model.util.GetGiftCertificateQueryParameter;
-import com.epam.esm.model.util.GiftCertificateRequest;
+import com.epam.esm.model.util.GiftCertificateSQL;
 import com.epam.esm.model.util.SortBy;
 import com.epam.esm.model.util.SortOrientation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetGiftCertificateRequestBuilder {
+public class GetGiftCertificateSQLBuilder {
 
-    private final static GetGiftCertificateRequestBuilder instance = new GetGiftCertificateRequestBuilder();
+    private final static GetGiftCertificateSQLBuilder instance = new GetGiftCertificateSQLBuilder();
 
     private final static String SPLIT_PARAM_STRING = " AND ";
 
@@ -29,14 +29,14 @@ public class GetGiftCertificateRequestBuilder {
     private final static String ORDER_ORIENTATION_ASC = " ASC";
     private final static String ORDER_ORIENTATION_DESC = " DESC";
 
-    private GetGiftCertificateRequestBuilder() {
+    private GetGiftCertificateSQLBuilder() {
     }
 
-    public static GetGiftCertificateRequestBuilder getInstance() {
+    public static GetGiftCertificateSQLBuilder getInstance() {
         return instance;
     }
 
-    public GiftCertificateRequest build(GetGiftCertificateQueryParameter giftCertificateQueryParameter) {
+    public GiftCertificateSQL build(GetGiftCertificateQueryParameter giftCertificateQueryParameter) {
         StringBuilder queryBuilder = new StringBuilder();
         List<String> conditionList = new ArrayList<>();
         List<Object> params = new ArrayList<>();
@@ -88,7 +88,7 @@ public class GetGiftCertificateRequestBuilder {
                 break;
         }
 
-        return new GiftCertificateRequest(queryBuilder.toString(), params.toArray());
+        return new GiftCertificateSQL(queryBuilder.toString(), params.toArray());
     }
 
 }

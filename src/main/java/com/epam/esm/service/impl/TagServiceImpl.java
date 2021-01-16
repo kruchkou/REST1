@@ -8,6 +8,7 @@ import com.epam.esm.service.exception.TagDataValidationException;
 import com.epam.esm.service.exception.TagNotFoundException;
 import com.epam.esm.service.util.mapper.EntityDTOTagMapper;
 import com.epam.esm.service.validator.TagValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +20,11 @@ public class TagServiceImpl implements TagService {
 
     private final TagDAO tagDAO;
 
-    private static final String NO_TAGS_FOUND = "No tags found";
     private static final String NO_TAG_WITH_ID_FOUND = "No tag with id: %d found";
     private static final String NO_TAG_WITH_NAME_FOUND = "No tag with name: %s found";
     private static final String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
 
+    @Autowired
     public TagServiceImpl(TagDAO tagDAO) {
         this.tagDAO = tagDAO;
     }
@@ -59,10 +60,6 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<TagDTO> getTags() {
         List<Tag> tagList = tagDAO.getTags();
-
-        if (tagList.isEmpty()) {
-            throw new TagNotFoundException(NO_TAGS_FOUND);
-        }
 
         return EntityDTOTagMapper.toDTO(tagList);
     }

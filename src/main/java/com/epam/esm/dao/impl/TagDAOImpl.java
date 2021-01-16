@@ -70,6 +70,7 @@ public class TagDAOImpl implements TagDAO {
         return jdbcTemplate.query(GET_TAGS_SQL, tagMapper);
     }
 
+    @Override
     public List<Tag> getTagListByGiftCertificateID(int id) {
         return jdbcTemplate.query(SELECT_BY_TAG_NAME_SQL, new Object[]{id}, tagMapper);
     }

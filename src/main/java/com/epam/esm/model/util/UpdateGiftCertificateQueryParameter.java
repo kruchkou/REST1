@@ -5,11 +5,12 @@ import java.util.Objects;
 
 public class UpdateGiftCertificateQueryParameter {
 
+    private Integer id;
     private String name;
     private String description;
     private Integer price;
     private Integer duration;
-    private Instant instant;
+    private Instant lastUpdateDate;
 
     public String getName() {
         return name;
@@ -43,12 +44,20 @@ public class UpdateGiftCertificateQueryParameter {
         this.duration = duration;
     }
 
-    public Instant getInstant() {
-        return instant;
+    public Integer getID() {
+        return id;
     }
 
-    public void setInstant(Instant instant) {
-        this.instant = instant;
+    public void setID(int id) {
+        this.id = id;
+    }
+
+    public Instant getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    public void setLastUpdateDate(Instant lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
     }
 
     @Override
@@ -60,12 +69,12 @@ public class UpdateGiftCertificateQueryParameter {
                 Objects.equals(description, that.description) &&
                 Objects.equals(price, that.price) &&
                 Objects.equals(duration, that.duration) &&
-                Objects.equals(instant, that.instant);
+                Objects.equals(lastUpdateDate, that.lastUpdateDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, price, duration, instant);
+        return Objects.hash(name, description, price, duration, lastUpdateDate);
     }
 
     @Override
@@ -75,7 +84,8 @@ public class UpdateGiftCertificateQueryParameter {
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", duration=" + duration +
-                ", instant=" + instant +
+                ", instant=" + lastUpdateDate +
                 '}';
     }
+
 }

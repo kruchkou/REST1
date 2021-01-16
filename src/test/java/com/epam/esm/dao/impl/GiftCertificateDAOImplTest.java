@@ -1,9 +1,9 @@
 package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.GiftCertificateDAO;
-import com.epam.esm.dao.util.UpdateGiftCertificateRequestBuilder;
+import com.epam.esm.dao.util.UpdateGiftCertificateSQLBuilder;
 import com.epam.esm.model.entity.GiftCertificate;
-import com.epam.esm.model.util.GiftCertificateRequest;
+import com.epam.esm.model.util.GiftCertificateSQL;
 import com.epam.esm.model.util.UpdateGiftCertificateQueryParameter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +12,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,8 +74,10 @@ class GiftCertificateDAOImplTest {
 
         UpdateGiftCertificateQueryParameter updateParameter = new UpdateGiftCertificateQueryParameter();
         updateParameter.setPrice(NEW_TEST_PRICE);
+        updateParameter.setID(TESTED_ID);
+        updateParameter.setLastUpdateDate(Instant.now());
 
-        GiftCertificateRequest updateRequest = UpdateGiftCertificateRequestBuilder.getInstance().build(updateParameter);
+        GiftCertificateSQL updateRequest = UpdateGiftCertificateSQLBuilder.getInstance().build(updateParameter);
 
         GiftCertificate updatedGift = giftCertificateDAO.updateGiftCertificate(updateRequest,TESTED_ID);
 

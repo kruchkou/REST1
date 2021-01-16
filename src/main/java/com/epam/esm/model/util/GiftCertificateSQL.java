@@ -3,12 +3,12 @@ package com.epam.esm.model.util;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class GiftCertificateRequest {
+public class GiftCertificateSQL {
 
-    private final Object[] params;
     private final String request;
+    private final Object[] params;
 
-    public GiftCertificateRequest(String request, Object[] params) {
+    public GiftCertificateSQL(String request, Object[] params) {
         this.params = params;
         this.request = request;
     }
@@ -25,7 +25,7 @@ public class GiftCertificateRequest {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GiftCertificateRequest that = (GiftCertificateRequest) o;
+        GiftCertificateSQL that = (GiftCertificateSQL) o;
         return Arrays.equals(params, that.params) &&
                 Objects.equals(request, that.request);
     }
@@ -39,7 +39,7 @@ public class GiftCertificateRequest {
 
     @Override
     public String toString() {
-        return "GiftCertificateRequest{" +
+        return "GiftCertificateSQL{" +
                 "params=" + Arrays.toString(params) +
                 ", request='" + request + '\'' +
                 '}';

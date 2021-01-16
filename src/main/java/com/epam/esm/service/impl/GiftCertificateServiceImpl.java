@@ -2,13 +2,13 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.GiftCertificateDAO;
 import com.epam.esm.dao.TagDAO;
-import com.epam.esm.dao.util.GetGiftCertificateRequestBuilder;
-import com.epam.esm.dao.util.UpdateGiftCertificateRequestBuilder;
+import com.epam.esm.dao.util.GetGiftCertificateSQLBuilder;
+import com.epam.esm.dao.util.UpdateGiftCertificateSQLBuilder;
 import com.epam.esm.model.dto.GiftCertificateDTO;
 import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.model.entity.Tag;
 import com.epam.esm.model.util.GetGiftCertificateQueryParameter;
-import com.epam.esm.model.util.GiftCertificateRequest;
+import com.epam.esm.model.util.GiftCertificateSQL;
 import com.epam.esm.model.util.UpdateGiftCertificateQueryParameter;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.exception.GiftCertificateDataValidationException;
@@ -30,7 +30,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final TagDAO tagDAO;
 
     private static final String NO_GIFT_CERTIFICATE_WITH_ID_FOUND = "No certificate with id: %d found";
-    private static final String NO_GIFT_CERTIFICATES_FOUND = "No certificates found";
     private static final String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
 
     @Autowired
@@ -61,17 +60,18 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     @Transactional
     public GiftCertificateDTO updateCertificate(UpdateGiftCertificateQueryParameter updateParameter, int id) {
-
         Optional<GiftCertificate> optionalGiftCertificate = giftCertificateDAO.getGiftCertificateByID(id);
+
+        updateParameter.setID(id);
 
         if (!optionalGiftCertificate.isPresent()) {
             throw new GiftCertificateNotFoundException(String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id));
         }
 
-        UpdateGiftCertificateRequestBuilder updateBuilder = UpdateGiftCertificateRequestBuilder.getInstance();
-        GiftCertificateRequest updateGiftCertificateRequest = updateBuilder.build(updateParameter);
+        UpdateGiftCertificateSQLBuilder updateBuilder = UpdateGiftCertificateSQLBuilder.getInstance();
+        GiftCertificateSQL updateGiftCertificateSQL = updateBuilder.build(updateParameter);
 
-        GiftCertificate updatedGiftCertificate = giftCertificateDAO.updateGiftCertificate(updateGiftCertificateRequest, id);
+        GiftCertificate updatedGiftCertificate = giftCertificateDAO.updateGiftCertificate(updateGiftCertificateSQL, id);
 
         return transformToDTOAndLoadTags(updatedGiftCertificate);
     }
@@ -101,10 +101,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         List<GiftCertificateDTO> giftCertificateDTOList = new ArrayList<>();
         List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates();
 
-        if (giftCertificateList.isEmpty()) {
-            throw new GiftCertificateNotFoundException(NO_GIFT_CERTIFICATES_FOUND);
-        }
-
         giftCertificateList.forEach(giftCertificate ->
                 giftCertificateDTOList.add(transformToDTOAndLoadTags(giftCertificate)));
 
@@ -113,7 +109,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public List<GiftCertificateDTO> getCertificates(GetGiftCertificateQueryParameter giftCertificateQueryParameter) {
-        GiftCertificateRequest giftCertificateRequest = GetGiftCertificateRequestBuilder.getInstance().build(giftCertificateQueryParameter);
+        GiftCertificateSQL giftCertificateRequest = GetGiftCertificateSQLBuilder.getInstance().build(giftCertificateQueryParameter);
 
         List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates(giftCertificateRequest);
         return transformToDTOAndLoadTags(giftCertificateList);
@@ -123,20 +119,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public List<GiftCertificateDTO> getCertificatesByTagName(String tagName) {
         List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificatesByTagName(tagName);
 
-        if (giftCertificateList.isEmpty()) {
-            throw new GiftCertificateNotFoundException(NO_GIFT_CERTIFICATES_FOUND);
-        }
-
         return transformToDTOAndLoadTags(giftCertificateList);
     }
 
     @Override
     public List<GiftCertificateDTO> getCertificatesByNameOrDescription(String searchText) {
         List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificatesByNameOrDescription(searchText);
-
-        if (giftCertificateList.isEmpty()) {
-            throw new GiftCertificateNotFoundException(NO_GIFT_CERTIFICATES_FOUND);
-        }
 
         return transformToDTOAndLoadTags(giftCertificateList);
     }
@@ -162,7 +150,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     private List<String> getTagNamesList(List<Tag> tagList) {
         List<String> tagNamesList = new ArrayList<>();
-
         tagList.forEach(tag -> tagNamesList.add(tag.getName()));
 
         return tagNamesList;

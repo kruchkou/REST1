@@ -3,9 +3,8 @@ package com.epam.esm.dao.impl;
 import com.epam.esm.dao.GiftCertificateDAO;
 import com.epam.esm.dao.mapper.GiftCertificateMapper;
 import com.epam.esm.dao.mapper.TagMapper;
-import com.epam.esm.dao.util.UpdateGiftCertificateRequestBuilder;
 import com.epam.esm.model.entity.GiftCertificate;
-import com.epam.esm.model.util.GiftCertificateRequest;
+import com.epam.esm.model.util.GiftCertificateSQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -73,9 +72,8 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     }
 
     @Override
-    public GiftCertificate updateGiftCertificate(GiftCertificateRequest giftCertificateRequest, int id) {
-        jdbcTemplate.update(giftCertificateRequest.getRequest(),
-                giftCertificateRequest.getParams(),id);
+    public GiftCertificate updateGiftCertificate(GiftCertificateSQL giftCertificateSQL, int id) {
+        jdbcTemplate.update(giftCertificateSQL.getRequest(), giftCertificateSQL.getParams());
 
         return getGiftCertificateByID(id).get();
     }
@@ -101,9 +99,9 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     }
 
     @Override
-    public List<GiftCertificate> getGiftCertificates(GiftCertificateRequest giftCertificateRequest) {
+    public List<GiftCertificate> getGiftCertificates(GiftCertificateSQL giftCertificateSQL) {
         return jdbcTemplate.query(
-                giftCertificateRequest.getRequest(), giftCertificateRequest.getParams(), GiftCertificateMapper.getInstance());
+                giftCertificateSQL.getRequest(), giftCertificateSQL.getParams(), GiftCertificateMapper.getInstance());
     }
 
     @Override
@@ -117,7 +115,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
                 SELECT_BY_NAME_OR_DESCRIPTION_SQL, new Object[]{searchText, searchText}, giftCertificateMapper);
     }
 
-    public static class ParamColumn {
+    private static class ParamColumn {
         private final static int NAME_PARAM_ID = 1;
         private final static int DESC_PARAM_ID = 2;
         private final static int PRICE_PARAM_ID = 3;

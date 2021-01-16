@@ -14,13 +14,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 class EntityDTOGiftCertificateMapperTest {
 
-    private static final int testID = 3;
-    private static final String testName = "test name";
-    private static final String testDescription = "test description";
-    private static final int testPrice = 10;
-    private static final int testDuration = 20;
-    private static final Date testCreateDate = new Date();
-    private static final Date testLastUpdateDate = new Date();
+    private static final int TEST_ID = 3;
+    private static final String TEST_NAME = "test name";
+    private static final String TEST_DESCRIPTION = "test description";
+    private static final int TEST_PRICE = 10;
+    private static final int TEST_DURATION = 20;
+    private static final Date TEST_CREATE_DATE = new Date();
+    private static final Date TEST_LAST_UPDATE_DATE = new Date();
 
     private GiftCertificate giftCertificate;
     private GiftCertificateDTO giftCertificateDTO;
@@ -30,44 +30,44 @@ class EntityDTOGiftCertificateMapperTest {
         giftCertificate = new GiftCertificate();
         giftCertificateDTO = new GiftCertificateDTO();
 
-        giftCertificate.setId(testID);
-        giftCertificate.setName(testName);
-        giftCertificate.setDescription(testDescription);
-        giftCertificate.setPrice(testPrice);
-        giftCertificate.setDuration(testDuration);
-        giftCertificate.setCreateDate(testCreateDate);
-        giftCertificate.setLastsUpdateDate(testLastUpdateDate);
+        giftCertificate.setId(TEST_ID);
+        giftCertificate.setName(TEST_NAME);
+        giftCertificate.setDescription(TEST_DESCRIPTION);
+        giftCertificate.setPrice(TEST_PRICE);
+        giftCertificate.setDuration(TEST_DURATION);
+        giftCertificate.setCreateDate(TEST_CREATE_DATE);
+        giftCertificate.setLastsUpdateDate(TEST_LAST_UPDATE_DATE);
 
-        giftCertificateDTO.setId(testID);
-        giftCertificateDTO.setName(testName);
-        giftCertificateDTO.setDescription(testDescription);
-        giftCertificateDTO.setPrice(testPrice);
-        giftCertificateDTO.setDuration(testDuration);
-        giftCertificateDTO.setCreateDate(testCreateDate);
-        giftCertificateDTO.setLastsUpdateDate(testLastUpdateDate);
+        giftCertificateDTO.setId(TEST_ID);
+        giftCertificateDTO.setName(TEST_NAME);
+        giftCertificateDTO.setDescription(TEST_DESCRIPTION);
+        giftCertificateDTO.setPrice(TEST_PRICE);
+        giftCertificateDTO.setDuration(TEST_DURATION);
+        giftCertificateDTO.setCreateDate(TEST_CREATE_DATE);
+        giftCertificateDTO.setLastsUpdateDate(TEST_LAST_UPDATE_DATE);
     }
 
     @Test
     public void shouldConvertToEntity() {
         final GiftCertificate testedGiftCertificate = EntityDTOGiftCertificateMapper.toEntity(giftCertificateDTO);
 
-        assertEquals(testName, testedGiftCertificate.getName());
-        assertEquals(testDescription, testedGiftCertificate.getDescription());
-        assertEquals(testPrice, testedGiftCertificate.getPrice());
-        assertEquals(testDuration, testedGiftCertificate.getDuration());
-        assertEquals(testCreateDate, testedGiftCertificate.getCreateDate());
-        assertEquals(testLastUpdateDate, testedGiftCertificate.getLastsUpdateDate());
+        assertEquals(TEST_NAME, testedGiftCertificate.getName());
+        assertEquals(TEST_DESCRIPTION, testedGiftCertificate.getDescription());
+        assertEquals(TEST_PRICE, testedGiftCertificate.getPrice());
+        assertEquals(TEST_DURATION, testedGiftCertificate.getDuration());
+        assertEquals(TEST_CREATE_DATE, testedGiftCertificate.getCreateDate());
+        assertEquals(TEST_LAST_UPDATE_DATE, testedGiftCertificate.getLastsUpdateDate());
     }
 
     @Test
     public void shouldConvertToDTO() {
         final GiftCertificateDTO testedGiftCertificateDTO = EntityDTOGiftCertificateMapper.toDTO(giftCertificate);
 
-        assertEquals(testName, testedGiftCertificateDTO.getName());
-        assertEquals(testDescription, testedGiftCertificateDTO.getDescription());
-        assertEquals(testPrice, testedGiftCertificateDTO.getPrice());
-        assertEquals(testDuration, testedGiftCertificateDTO.getDuration());
-        assertEquals(testCreateDate, testedGiftCertificateDTO.getCreateDate());
-        assertEquals(testLastUpdateDate, testedGiftCertificateDTO.getLastsUpdateDate());
+        assertEquals(TEST_NAME, testedGiftCertificateDTO.getName());
+        assertEquals(TEST_DESCRIPTION, testedGiftCertificateDTO.getDescription());
+        assertEquals(TEST_PRICE, testedGiftCertificateDTO.getPrice());
+        assertEquals(TEST_DURATION, testedGiftCertificateDTO.getDuration());
+        assertEquals(TEST_CREATE_DATE, testedGiftCertificateDTO.getCreateDate());
+        assertEquals(TEST_LAST_UPDATE_DATE, testedGiftCertificateDTO.getLastsUpdateDate());
     }
 }

@@ -42,12 +42,10 @@ public final class EntityDTOGiftCertificateMapper {
     public static List<GiftCertificateDTO> toDTO(List<GiftCertificate> giftCertificateList) {
         final List<GiftCertificateDTO> giftCertificateDTOList = new ArrayList<>();
 
-        for (GiftCertificate giftCertificate : giftCertificateList) {
-
+        giftCertificateList.forEach(giftCertificate -> {
             GiftCertificateDTO giftCertificateDTO = toDTO(giftCertificate);
-
             giftCertificateDTOList.add(giftCertificateDTO);
-        }
+        });
 
         return giftCertificateDTOList;
     }
@@ -55,12 +53,10 @@ public final class EntityDTOGiftCertificateMapper {
     public static List<GiftCertificate> toEntity(List<GiftCertificateDTO> giftCertificateDTOList) {
         final List<GiftCertificate> giftCertificateList = new ArrayList<>();
 
-        for (GiftCertificateDTO giftCertificateDTO : giftCertificateDTOList) {
-
+        giftCertificateDTOList.forEach(giftCertificateDTO -> {
             GiftCertificate giftCertificate = toEntity(giftCertificateDTO);
-
             giftCertificateList.add(giftCertificate);
-        }
+        });
 
         return giftCertificateList;
     }

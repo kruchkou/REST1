@@ -32,12 +32,7 @@ public final class EntityDTOTagMapper {
     public static List<TagDTO> toDTO(List<Tag> tagList) {
         List<TagDTO> tagDTOList = new ArrayList<>();
 
-        for (Tag tag : tagList) {
-
-            TagDTO tagDTO = toDTO(tag);
-
-            tagDTOList.add(tagDTO);
-        }
+        tagList.forEach(tag -> tagDTOList.add(toDTO(tag)));
 
         return tagDTOList;
     }
@@ -45,12 +40,7 @@ public final class EntityDTOTagMapper {
     public static List<Tag> toEntity(List<TagDTO> tagDTOList) {
         List<Tag> tagList = new ArrayList<>();
 
-        for (TagDTO tagDTO : tagDTOList) {
-
-            Tag tag = toEntity(tagDTO);
-
-            tagList.add(tag);
-        }
+        tagDTOList.forEach(tagDTO -> tagList.add(toEntity(tagDTO)));
 
         return tagList;
     }

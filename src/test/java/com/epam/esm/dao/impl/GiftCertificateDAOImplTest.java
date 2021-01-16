@@ -56,9 +56,6 @@ class GiftCertificateDAOImplTest {
     public void deleteGiftCertificate() {
         final int TEST_ID = 1;
 
-        final int QUANTITY_WHEN_SUCCESSFULLY_DELETED = 1;
-        final int QUANTITY_WHEN_NOTHING_DELETED = 0;
-
         giftCertificateDAO.deleteGiftCertificate(TEST_ID);
         Optional<GiftCertificate> giftCertificate = giftCertificateDAO.getGiftCertificateByID(TEST_ID);
         assertFalse(giftCertificate.isPresent());
@@ -73,10 +70,10 @@ class GiftCertificateDAOImplTest {
 
         gift.setPrice(NEW_TEST_PRICE);
 
-        gift = giftCertificateDAO.getGiftCertificateByID(gift.getId()).get();
+        GiftCertificate updatedGift = giftCertificateDAO.updateGiftCertificate(gift,gift.getId());
 
-        assertEquals(NEW_TEST_PRICE, gift.getPrice());
-        assertNotNull(gift.getLastsUpdateDate());
+        assertEquals(NEW_TEST_PRICE, updatedGift.getPrice());
+        assertNotEquals(gift.getLastsUpdateDate(),updatedGift.getLastsUpdateDate());
     }
 
     @Test
@@ -84,8 +81,11 @@ class GiftCertificateDAOImplTest {
         final int EXIST_ID = 1;
         final int NOT_EXIST_ID = 15;
 
-        assertNotNull(giftCertificateDAO.getGiftCertificateByID(EXIST_ID));
-        assertNull(giftCertificateDAO.getGiftCertificateByID(NOT_EXIST_ID));
+        Optional<GiftCertificate> existGiftCertificate = giftCertificateDAO.getGiftCertificateByID(EXIST_ID);
+        Optional<GiftCertificate> notExistGiftCertificate = giftCertificateDAO.getGiftCertificateByID(NOT_EXIST_ID);
+
+        assertTrue(existGiftCertificate.isPresent());
+        assertFalse(notExistGiftCertificate.isPresent());
     }
 
     @Test
@@ -107,9 +107,13 @@ class GiftCertificateDAOImplTest {
         final int GIFTS_QUANTITY_WITH_SECOND_TAG = 2;
         final int GIFTS_QUANTITY_WITH_THIRD_TAG = 0;
 
-        assertEquals(GIFTS_QUANTITY_WITH_FIRST_TAG, giftCertificateDAO.getGiftCertificatesByTagName(FIRST_TEST_TAG_NAME).size());
-        assertEquals(GIFTS_QUANTITY_WITH_SECOND_TAG, giftCertificateDAO.getGiftCertificatesByTagName(SECOND_TEST_TAG_NAME).size());
-        assertEquals(GIFTS_QUANTITY_WITH_THIRD_TAG, giftCertificateDAO.getGiftCertificatesByTagName(THIRD_TEST_TAG_NAME).size());
+        List<GiftCertificate> firstGiftCertificateList = giftCertificateDAO.getGiftCertificatesByTagName(FIRST_TEST_TAG_NAME);
+        List<GiftCertificate> secondGiftCertificateList = giftCertificateDAO.getGiftCertificatesByTagName(SECOND_TEST_TAG_NAME);
+        List<GiftCertificate> thirdGiftCertificateList = giftCertificateDAO.getGiftCertificatesByTagName(THIRD_TEST_TAG_NAME);
+
+        assertEquals(GIFTS_QUANTITY_WITH_FIRST_TAG, firstGiftCertificateList.size());
+        assertEquals(GIFTS_QUANTITY_WITH_SECOND_TAG, secondGiftCertificateList.size());
+        assertEquals(GIFTS_QUANTITY_WITH_THIRD_TAG, thirdGiftCertificateList.size());
     }
 
     @Test
@@ -120,9 +124,11 @@ class GiftCertificateDAOImplTest {
         final int GIFT_QUANTITY_WITH_SEARCH_NAME = 2;
         final int GIFT_QUANTITY_WITH_DESC_NAME = 1;
 
-        assertNotNull(giftCertificateDAO.getGiftCertificatesByNameOrDescription(SEARCH_PART_NAME));
-        assertEquals(GIFT_QUANTITY_WITH_SEARCH_NAME, giftCertificateDAO.getGiftCertificatesByNameOrDescription(SEARCH_PART_NAME).size());
-        assertEquals(GIFT_QUANTITY_WITH_DESC_NAME, giftCertificateDAO.getGiftCertificatesByNameOrDescription(SEARCH_PART_DESC).size());
+        List<GiftCertificate> giftCertificateListByName = giftCertificateDAO.getGiftCertificatesByNameOrDescription(SEARCH_PART_NAME);
+        List<GiftCertificate> giftCertificateListByDesc = giftCertificateDAO.getGiftCertificatesByNameOrDescription(SEARCH_PART_DESC);
+
+        assertEquals(GIFT_QUANTITY_WITH_SEARCH_NAME, giftCertificateListByName.size());
+        assertEquals(GIFT_QUANTITY_WITH_DESC_NAME, giftCertificateListByDesc.size());
     }
 
 }

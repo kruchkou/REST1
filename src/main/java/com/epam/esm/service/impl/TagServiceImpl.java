@@ -31,14 +31,14 @@ public class TagServiceImpl implements TagService {
     @Override
     @Transactional
     public TagDTO createTag(TagDTO tagDTO) {
-        if (TagValidator.validateForCreate(tagDTO)) {
-            final String name = tagDTO.getName();
-            Tag tag = tagDAO.createTag(name);
-
-            return EntityDTOTagMapper.toDTO(tag);
-        } else {
+        if (!TagValidator.validateForCreate(tagDTO)) {
             throw new TagDataValidationException(DATA_VALIDATION_EXCEPTION);
         }
+
+        String tagName = tagDTO.getName();
+        Tag tag = tagDAO.createTag(tagName);
+
+        return EntityDTOTagMapper.toDTO(tag);
     }
 
     @Override
@@ -50,10 +50,8 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDTO getTagByID(int id) {
         Optional<Tag> optionalTag = tagDAO.getTagByID(id);
-        if (!optionalTag.isPresent()) {
-            throw new TagNotFoundException(String.format(NO_TAG_WITH_ID_FOUND, id));
-        }
-        Tag tag = optionalTag.get();
+
+        Tag tag = optionalTag.orElseThrow(() -> new TagNotFoundException(String.format(NO_TAG_WITH_ID_FOUND, id)));
 
         return EntityDTOTagMapper.toDTO(tag);
     }
@@ -73,10 +71,7 @@ public class TagServiceImpl implements TagService {
     public TagDTO getTagByName(String name) {
         Optional<Tag> optionalTag = tagDAO.getTagByName(name);
 
-        if (!optionalTag.isPresent()) {
-            throw new TagNotFoundException(String.format(NO_TAG_WITH_NAME_FOUND, name));
-        }
-        Tag tag = optionalTag.get();
+        Tag tag = optionalTag.orElseThrow(() -> new TagNotFoundException(String.format(NO_TAG_WITH_NAME_FOUND, name)));
 
         return EntityDTOTagMapper.toDTO(tag);
     }

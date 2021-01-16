@@ -25,6 +25,7 @@ public class GiftCertificateController {
     }
 
     @GetMapping("/{id}")
+    @ResponseBody
     public GiftCertificateDTO getGiftCertificateByID(@PathVariable int id) {
         return giftCertificateService.getGiftCertificateByID(id);
     }

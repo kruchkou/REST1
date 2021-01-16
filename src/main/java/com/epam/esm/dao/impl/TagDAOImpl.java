@@ -20,10 +20,15 @@ public class TagDAOImpl implements TagDAO {
     private final static TagMapper tagMapper = TagMapper.getInstance();
 
     private final static String CREATE_SQL = "INSERT INTO tag(name) VALUES (?)";
+
     private final static String DELETE_SQL = "DELETE FROM tag WHERE id = ?";
+
     private final static String INSERT_INTO_GIFT_TAG_SQL = "INSERT INTO gift_tag(gift, tag) VALUES (?,?)";
+
     private final static String GET_TAG_BY_ID_SQL = "SELECT * FROM tag WHERE id = ?";
+
     private final static String GET_TAGS_SQL = "SELECT * FROM tag";
+
     private final static String SELECT_BY_TAG_NAME_SQL = "SELECT * FROM tag tags " +
             "INNER JOIN gift_tag link ON tags.id = link.tag " +
             "INNER JOIN gift_certificate gift ON link.gift = gift.id " +

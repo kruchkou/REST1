@@ -28,18 +28,26 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     private final static String SELECT_BY_NAME_OR_DESCRIPTION_SQL = "SELECT * FROM gift_certificate gift " +
             "WHERE (name REGEXP ? OR description REGEXP ?)";
+
     private final static String SELECT_BY_TAG_NAME_SQL = "SELECT * FROM gift_certificate gifts " +
             "INNER JOIN gift_tag link ON gifts.id = link.gift " +
             "INNER JOIN tag tags ON link.tag = tags.id " +
             "WHERE (tags.name = ?)";
+
     private final static String SELECT_ALL_SQL = "SELECT * FROM gift_certificate";
 
     private final static String SELECT_TAGS_SQL = "SELECT * FROM tag JOIN gift_tag gt on tag.id = gt.tag " +
             "where gt.gift = ?";
+
     private final static String SELECT_GIFT_BY_ID_SQL = "SELECT * FROM gift_certificate WHERE (id = ?)";
+
     private final static String DELETE_SQL = "DELETE FROM gift_certificate WHERE id = ?";
-    private final static String UPDATE_SQL = "UPDATE gift_certificate SET name = ?, description = ?, price = ?, duration = ?, last_update_date = ? WHERE id = ?";
-    private final static String CREATE_SQL = "INSERT INTO gift_certificate (name,description,price,duration,create_date) VALUES (?,?,?,?,?)";
+
+    private final static String UPDATE_SQL = "UPDATE gift_certificate SET " +
+            "name = ?, description = ?, price = ?, duration = ?, last_update_date = ? WHERE id = ?";
+
+    private final static String CREATE_SQL = "INSERT INTO gift_certificate" +
+            " (name, description, price, duration, create_date, last_update_date) VALUES (?,?,?,?,?,?)";
 
     @Autowired
     public GiftCertificateDAOImpl(DataSource dataSource) {
@@ -60,6 +68,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
             ps.setInt(ParamColumn.PRICE_PARAM_ID, price);
             ps.setInt(ParamColumn.DURATION_PARAM_ID, duration);
             ps.setDate(ParamColumn.CREATE_DATE_PARAM_ID, CURRENT_DATETIME);
+            ps.setDate(ParamColumn.LAST_UPDATE_DATE_PARAM_ID, CURRENT_DATETIME);
             return ps;
         }, keyHolder);
 
@@ -97,9 +106,11 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     @Override
     public List<GiftCertificate> getGiftCertificates() {
         List<GiftCertificate> certificates = jdbcTemplate.query(SELECT_ALL_SQL, giftCertificateMapper);
-        for (GiftCertificate certificate : certificates) {
-            certificate.setTagList(jdbcTemplate.query(SELECT_TAGS_SQL, new Object[]{certificate.getId()}, TagMapper.getInstance()));
-        }
+
+        certificates.forEach(certificate ->
+                certificate.setTagList(jdbcTemplate.query(
+                        SELECT_TAGS_SQL, new Object[]{certificate.getId()}, TagMapper.getInstance())));
+
         return certificates;
     }
 
@@ -110,7 +121,8 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     @Override
     public List<GiftCertificate> getGiftCertificatesByNameOrDescription(String searchText) {
-        return jdbcTemplate.query(SELECT_BY_NAME_OR_DESCRIPTION_SQL, new Object[]{searchText, searchText}, giftCertificateMapper);
+        return jdbcTemplate.query(
+                SELECT_BY_NAME_OR_DESCRIPTION_SQL, new Object[]{searchText, searchText}, giftCertificateMapper);
     }
 
     public static class ParamColumn {
@@ -119,6 +131,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
         private final static int PRICE_PARAM_ID = 3;
         private final static int DURATION_PARAM_ID = 4;
         private final static int CREATE_DATE_PARAM_ID = 5;
+        private final static int LAST_UPDATE_DATE_PARAM_ID = 6;
     }
 
 }

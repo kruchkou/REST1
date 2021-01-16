@@ -7,21 +7,25 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class EntityDTOGiftCertificateMapperTest {
 
-    private static final int TEST_ID = 3;
-    private static final String TEST_NAME = "test name";
-    private static final String TEST_DESCRIPTION = "test description";
-    private static final int TEST_PRICE = 10;
-    private static final int TEST_DURATION = 20;
-    private static final Date TEST_CREATE_DATE = new Date();
-    private static final Date TEST_LAST_UPDATE_DATE = new Date();
-
+    private final static int TEST_ID = 3;
+    private final static String TEST_NAME = "test name";
+    private final static String TEST_DESCRIPTION = "test description";
+    private final static int TEST_PRICE = 10;
+    private final static int TEST_DURATION = 20;
+    private final static Instant TEST_CREATE_DATE_INSTANT = Instant.now();
+    private final static Instant TEST_LAST_UPDATE_DATE_INSTANT = Instant.now();
+    private final static String ZONE_ID_MINSK = "Europe/Minsk";
+    private final static ZonedDateTime TEST_CREATE_DATE_ZONED_DATE_TIME = TEST_CREATE_DATE_INSTANT.atZone(ZoneId.of(ZONE_ID_MINSK));
+    private final static ZonedDateTime TEST_LAST_UPDATE_DATE_ZONED_DATE_TIME = TEST_LAST_UPDATE_DATE_INSTANT.atZone(ZoneId.of(ZONE_ID_MINSK));
     private GiftCertificate giftCertificate;
     private GiftCertificateDTO giftCertificateDTO;
 
@@ -35,16 +39,16 @@ class EntityDTOGiftCertificateMapperTest {
         giftCertificate.setDescription(TEST_DESCRIPTION);
         giftCertificate.setPrice(TEST_PRICE);
         giftCertificate.setDuration(TEST_DURATION);
-        giftCertificate.setCreateDate(TEST_CREATE_DATE);
-        giftCertificate.setLastsUpdateDate(TEST_LAST_UPDATE_DATE);
+        giftCertificate.setCreateDate(TEST_CREATE_DATE_INSTANT);
+        giftCertificate.setLastsUpdateDate(TEST_LAST_UPDATE_DATE_INSTANT);
 
         giftCertificateDTO.setId(TEST_ID);
         giftCertificateDTO.setName(TEST_NAME);
         giftCertificateDTO.setDescription(TEST_DESCRIPTION);
         giftCertificateDTO.setPrice(TEST_PRICE);
         giftCertificateDTO.setDuration(TEST_DURATION);
-        giftCertificateDTO.setCreateDate(TEST_CREATE_DATE);
-        giftCertificateDTO.setLastsUpdateDate(TEST_LAST_UPDATE_DATE);
+        giftCertificateDTO.setCreateDate(TEST_CREATE_DATE_ZONED_DATE_TIME);
+        giftCertificateDTO.setLastsUpdateDate(TEST_LAST_UPDATE_DATE_ZONED_DATE_TIME);
     }
 
     @Test
@@ -55,8 +59,8 @@ class EntityDTOGiftCertificateMapperTest {
         assertEquals(TEST_DESCRIPTION, testedGiftCertificate.getDescription());
         assertEquals(TEST_PRICE, testedGiftCertificate.getPrice());
         assertEquals(TEST_DURATION, testedGiftCertificate.getDuration());
-        assertEquals(TEST_CREATE_DATE, testedGiftCertificate.getCreateDate());
-        assertEquals(TEST_LAST_UPDATE_DATE, testedGiftCertificate.getLastsUpdateDate());
+        assertEquals(TEST_CREATE_DATE_INSTANT, testedGiftCertificate.getCreateDate());
+        assertEquals(TEST_LAST_UPDATE_DATE_INSTANT, testedGiftCertificate.getLastsUpdateDate());
     }
 
     @Test
@@ -67,7 +71,7 @@ class EntityDTOGiftCertificateMapperTest {
         assertEquals(TEST_DESCRIPTION, testedGiftCertificateDTO.getDescription());
         assertEquals(TEST_PRICE, testedGiftCertificateDTO.getPrice());
         assertEquals(TEST_DURATION, testedGiftCertificateDTO.getDuration());
-        assertEquals(TEST_CREATE_DATE, testedGiftCertificateDTO.getCreateDate());
-        assertEquals(TEST_LAST_UPDATE_DATE, testedGiftCertificateDTO.getLastsUpdateDate());
+        assertEquals(TEST_CREATE_DATE_ZONED_DATE_TIME, testedGiftCertificateDTO.getCreateDate());
+        assertEquals(TEST_LAST_UPDATE_DATE_ZONED_DATE_TIME, testedGiftCertificateDTO.getLastsUpdateDate());
     }
 }

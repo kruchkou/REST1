@@ -1,8 +1,10 @@
 package com.epam.esm.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,8 +15,10 @@ public class GiftCertificateDTO {
     private String description;
     private Integer price;
     private Integer duration;
-    private Date createDate;
-    private Date lastsUpdateDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    private LocalDateTime createDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    private LocalDateTime lastsUpdateDate;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> tagNames;
 
@@ -58,19 +62,19 @@ public class GiftCertificateDTO {
         this.duration = duration;
     }
 
-    public Date getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
-    public Date getLastsUpdateDate() {
+    public LocalDateTime getLastsUpdateDate() {
         return lastsUpdateDate;
     }
 
-    public void setLastsUpdateDate(Date lastsUpdateDate) {
+    public void setLastsUpdateDate(LocalDateTime lastsUpdateDate) {
         this.lastsUpdateDate = lastsUpdateDate;
     }
 

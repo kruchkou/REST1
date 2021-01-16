@@ -1,6 +1,7 @@
 package com.epam.esm.model.entity;
 
-import java.util.Date;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,8 +12,8 @@ public class GiftCertificate {
     private String description;
     private Integer price;
     private Integer duration;
-    private Date createDate;
-    private Date lastsUpdateDate;
+    private Instant createDate;
+    private Instant lastsUpdateDate;
 
     private List<Tag> tagList;
 
@@ -56,19 +57,19 @@ public class GiftCertificate {
         this.duration = duration;
     }
 
-    public Date getCreateDate() {
+    public Instant getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(Instant createDate) {
         this.createDate = createDate;
     }
 
-    public Date getLastsUpdateDate() {
+    public Instant getLastsUpdateDate() {
         return lastsUpdateDate;
     }
 
-    public void setLastsUpdateDate(Date lastsUpdateDate) {
+    public void setLastsUpdateDate(Instant lastsUpdateDate) {
         this.lastsUpdateDate = lastsUpdateDate;
     }
 

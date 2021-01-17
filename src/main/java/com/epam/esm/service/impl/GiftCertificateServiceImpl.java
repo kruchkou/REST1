@@ -83,13 +83,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         if (!GiftCertificateValidator.validateForCreate(giftCertificateDTO)) {
             throw new GiftCertificateDataValidationException(DATA_VALIDATION_EXCEPTION);
         }
+        GiftCertificate giftCertificate = EntityDTOGiftCertificateMapper.toEntity(giftCertificateDTO);
 
-        final String name = giftCertificateDTO.getName();
-        final String desc = giftCertificateDTO.getDescription();
-        final int price = giftCertificateDTO.getPrice();
-        final int duration = giftCertificateDTO.getDuration();
-
-        GiftCertificate newGiftCertificate = giftCertificateDAO.createGiftCertificate(name, desc, price, duration);
+        GiftCertificate newGiftCertificate = giftCertificateDAO.createGiftCertificate(giftCertificate);
 
         createTagsIfNotFoundAndInsert(newGiftCertificate.getId(), giftCertificateDTO.getTagNames());
 

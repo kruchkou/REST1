@@ -51,17 +51,17 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
 
     @Override
-    public GiftCertificate createGiftCertificate(String name, String description, int price, int duration) {
+    public GiftCertificate createGiftCertificate(GiftCertificate giftCertificate) {
         final KeyHolder keyHolder = new GeneratedKeyHolder();
         final Timestamp CURRENT_TIMESTAMP = Timestamp.from(Instant.now());
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection
                     .prepareStatement(CREATE_SQL, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(ParamColumn.NAME_PARAM_ID, name);
-            ps.setString(ParamColumn.DESC_PARAM_ID, description);
-            ps.setInt(ParamColumn.PRICE_PARAM_ID, price);
-            ps.setInt(ParamColumn.DURATION_PARAM_ID, duration);
+            ps.setString(ParamColumn.NAME_PARAM_ID, giftCertificate.getName());
+            ps.setString(ParamColumn.DESC_PARAM_ID, giftCertificate.getDescription());
+            ps.setInt(ParamColumn.PRICE_PARAM_ID, giftCertificate.getPrice());
+            ps.setInt(ParamColumn.DURATION_PARAM_ID, giftCertificate.getDuration());
             ps.setTimestamp(ParamColumn.CREATE_DATE_PARAM_ID, CURRENT_TIMESTAMP);
             ps.setTimestamp(ParamColumn.LAST_UPDATE_DATE_PARAM_ID, CURRENT_TIMESTAMP);
             return ps;

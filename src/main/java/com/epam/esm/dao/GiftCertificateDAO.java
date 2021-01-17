@@ -12,7 +12,7 @@ public interface GiftCertificateDAO {
 
     public GiftCertificate updateGiftCertificate(GiftCertificateSQL giftCertificateSQL, int id);
 
-    public GiftCertificate createGiftCertificate(String name, String description, int price, int duration);
+    public GiftCertificate createGiftCertificate(GiftCertificate giftCertificate);
 
     public Optional<GiftCertificate> getGiftCertificateByID(int id);
 

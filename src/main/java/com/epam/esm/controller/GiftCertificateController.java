@@ -41,23 +41,8 @@ public class GiftCertificateController {
             @RequestParam(value = "sortBy", defaultValue = EMPTY_STRING) String sortBy,
             @RequestParam(value = "sortOrientation", defaultValue = EMPTY_STRING) String sortOrientation) {
 
-        GetGiftCertificateQueryParameter giftCertificateQueryParameter = new GetGiftCertificateQueryParameter();
-
-        if (!tagName.equals(EMPTY_STRING)) {
-            giftCertificateQueryParameter.setTagName(tagName);
-        }
-        if (!name.equals(EMPTY_STRING)) {
-            giftCertificateQueryParameter.setName(name);
-        }
-        if (!description.equals(EMPTY_STRING)) {
-            giftCertificateQueryParameter.setDescription(description);
-        }
-        if (!sortBy.equals(EMPTY_STRING)) {
-            giftCertificateQueryParameter.setSortBy(sortBy);
-        }
-        if (!sortOrientation.equals(EMPTY_STRING)) {
-            giftCertificateQueryParameter.setSortOrientation(sortOrientation);
-        }
+        GetGiftCertificateQueryParameter giftCertificateQueryParameter = new GetGiftCertificateQueryParameter(
+                tagName, name, description, sortBy, sortOrientation);
 
         return giftCertificateService.getCertificates(giftCertificateQueryParameter);
     }
@@ -69,7 +54,9 @@ public class GiftCertificateController {
     }
 
     @PutMapping("/{id}")
-    public GiftCertificateDTO updateGiftCertificate(@RequestBody UpdateGiftCertificateQueryParameter updateParameter, @PathVariable int id) {
+    public GiftCertificateDTO updateGiftCertificate(
+            @RequestBody UpdateGiftCertificateQueryParameter updateParameter, @PathVariable int id) {
+
         return giftCertificateService.updateCertificate(updateParameter, id);
     }
 

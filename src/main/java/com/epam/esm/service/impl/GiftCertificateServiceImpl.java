@@ -10,15 +10,14 @@ import com.epam.esm.model.entity.Tag;
 import com.epam.esm.model.util.GetGiftCertificateQueryParameter;
 import com.epam.esm.model.util.GiftCertificateSQL;
 import com.epam.esm.service.GiftCertificateService;
-import com.epam.esm.service.exception.GiftCertificateDataValidationException;
-import com.epam.esm.service.exception.GiftCertificateNotFoundException;
+import com.epam.esm.service.exception.impl.GiftCertificateDataValidationException;
+import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
 import com.epam.esm.service.util.mapper.EntityDTOGiftCertificateMapper;
 import com.epam.esm.service.validator.GiftCertificateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +29,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final GiftCertificateDAO giftCertificateDAO;
     private final TagDAO tagDAO;
 
-    private static final String NO_GIFT_CERTIFICATE_WITH_ID_FOUND = "No certificate with id: %d found";
-    private static final String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
+    private final static String NO_GIFT_CERTIFICATE_WITH_ID_FOUND = "No certificate with id: %d found";
+    private final static String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
+
+    private final static String ERROR_CODE_GIFT_VALIDATION_FAILED = "0101";
+    private final static String ERROR_CODE_GIFT_NOT_FOUND_FAILED = "0102404%d";
 
     @Autowired
     public GiftCertificateServiceImpl(GiftCertificateDAO giftCertificateDAO, TagDAO tagDAO) {
@@ -43,7 +45,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Transactional
     public void deleteCertificate(int id) {
         if (!giftCertificateDAO.getGiftCertificateByID(id).isPresent()) {
-            throw new GiftCertificateNotFoundException();
+            throw new GiftCertificateNotFoundException(
+                    String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id),
+                    String.format(ERROR_CODE_GIFT_NOT_FOUND_FAILED, id));
         }
 
         List<Tag> tagList = tagDAO.getTagListByGiftCertificateID(id);
@@ -58,8 +62,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public GiftCertificateDTO getGiftCertificateByID(int id) {
         Optional<GiftCertificate> optionalGiftCertificate = giftCertificateDAO.getGiftCertificateByID(id);
 
-        GiftCertificate giftCertificate = optionalGiftCertificate.orElseThrow(() ->
-                new GiftCertificateNotFoundException(String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id)));
+        GiftCertificate giftCertificate = optionalGiftCertificate.orElseThrow(() -> new GiftCertificateNotFoundException(
+                String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id),
+                String.format(ERROR_CODE_GIFT_NOT_FOUND_FAILED, id)));
 
         return transformToDTOAndLoadTags(giftCertificate);
     }
@@ -72,7 +77,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         giftCertificateDTO.setId(id);
 
         if (!optionalGiftCertificate.isPresent()) {
-            throw new GiftCertificateNotFoundException(String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id));
+            throw new GiftCertificateNotFoundException(
+                    String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id),
+                    String.format(ERROR_CODE_GIFT_NOT_FOUND_FAILED, id));
         }
 
         UpdateGiftCertificateSQLBuilder updateBuilder = UpdateGiftCertificateSQLBuilder.getInstance();
@@ -92,8 +99,10 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public GiftCertificateDTO createGiftCertificate(GiftCertificateDTO giftCertificateDTO) {
 
         if (!GiftCertificateValidator.validateForCreate(giftCertificateDTO)) {
-            throw new GiftCertificateDataValidationException(DATA_VALIDATION_EXCEPTION);
+            throw new GiftCertificateDataValidationException(
+                    DATA_VALIDATION_EXCEPTION, ERROR_CODE_GIFT_VALIDATION_FAILED);
         }
+
         GiftCertificate giftCertificate = EntityDTOGiftCertificateMapper.toEntity(giftCertificateDTO);
 
         GiftCertificate newGiftCertificate = giftCertificateDAO.createGiftCertificate(giftCertificate);

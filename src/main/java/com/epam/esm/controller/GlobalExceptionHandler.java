@@ -1,16 +1,17 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.model.util.ExceptionResponse;
-import com.epam.esm.service.exception.GiftCertificateDataValidationException;
-import com.epam.esm.service.exception.GiftCertificateNotFoundException;
-import com.epam.esm.service.exception.TagDataValidationException;
-import com.epam.esm.service.exception.TagNotFoundException;
+import com.epam.esm.service.exception.impl.GiftCertificateDataValidationException;
+import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
+import com.epam.esm.service.exception.impl.TagDataValidationException;
+import com.epam.esm.service.exception.impl.TagNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-//@ControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
@@ -35,7 +36,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         final HttpStatus HTTP_STATUS = HttpStatus.BAD_REQUEST;
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse(e.getMessage());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(e.getMessage(), e.getErrorCode());
         return new ResponseEntity<>(exceptionResponse, HTTP_STATUS);
     }
 
@@ -43,7 +44,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleTagDataValidationException(TagDataValidationException e) {
         final HttpStatus HTTP_STATUS = HttpStatus.BAD_REQUEST;
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse(e.getMessage());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(e.getMessage(), e.getErrorCode());
         return new ResponseEntity<>(exceptionResponse, HTTP_STATUS);
     }
 
@@ -52,7 +53,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleGiftCertificateNotFoundException(GiftCertificateNotFoundException e) {
         final HttpStatus HTTP_STATUS = HttpStatus.NOT_FOUND;
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse(e.getMessage());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(e.getMessage(), e.getErrorCode());
         return new ResponseEntity<>(exceptionResponse, HTTP_STATUS);
     }
 
@@ -60,7 +61,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleTagNotFoundException(TagNotFoundException e) {
         final HttpStatus HTTP_STATUS = HttpStatus.NOT_FOUND;
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse(e.getMessage());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(e.getMessage(), e.getErrorCode());
         return new ResponseEntity<>(exceptionResponse, HTTP_STATUS);
     }
 }

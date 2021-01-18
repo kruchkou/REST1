@@ -35,6 +35,12 @@ public class TagController {
         return tagService.getTagByID(id);
     }
 
+    @GetMapping(params = "name")
+    public TagDTO getTagsByName(@RequestParam(value = "name") String name) {
+
+        return tagService.getTagByName(name);
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEmployee(@PathVariable int id) {

@@ -9,7 +9,6 @@ import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.model.entity.Tag;
 import com.epam.esm.model.util.GetGiftCertificateQueryParameter;
 import com.epam.esm.model.util.GiftCertificateSQL;
-import com.epam.esm.model.util.UpdateGiftCertificateQueryParameter;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.exception.GiftCertificateDataValidationException;
 import com.epam.esm.service.exception.GiftCertificateNotFoundException;
@@ -19,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +45,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         if (!giftCertificateDAO.getGiftCertificateByID(id).isPresent()) {
             throw new GiftCertificateNotFoundException();
         }
+
+        List<Tag> tagList = tagDAO.getTagListByGiftCertificateID(id);
+        for (Tag tag : tagList) {
+            tagDAO.deleteTag(tag.getId());
+        }
+
         giftCertificateDAO.deleteGiftCertificate(id);
     }
 
@@ -59,19 +66,23 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     @Transactional
-    public GiftCertificateDTO updateCertificate(UpdateGiftCertificateQueryParameter updateParameter, int id) {
+    public GiftCertificateDTO updateCertificate(GiftCertificateDTO giftCertificateDTO, int id) {
         Optional<GiftCertificate> optionalGiftCertificate = giftCertificateDAO.getGiftCertificateByID(id);
 
-        updateParameter.setID(id);
+        giftCertificateDTO.setId(id);
 
         if (!optionalGiftCertificate.isPresent()) {
             throw new GiftCertificateNotFoundException(String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id));
         }
 
         UpdateGiftCertificateSQLBuilder updateBuilder = UpdateGiftCertificateSQLBuilder.getInstance();
-        GiftCertificateSQL updateGiftCertificateSQL = updateBuilder.build(updateParameter);
+        giftCertificateDTO.setLastUpdateDate(LocalDateTime.now());
+        GiftCertificate giftCertificate = EntityDTOGiftCertificateMapper.toEntity(giftCertificateDTO);
+        GiftCertificateSQL updateGiftCertificateSQL = updateBuilder.build(giftCertificate);
 
         GiftCertificate updatedGiftCertificate = giftCertificateDAO.updateGiftCertificate(updateGiftCertificateSQL, id);
+        giftCertificateDAO.deleteLinkWithTagsByID(id);
+        createTagsIfNotFoundAndInsert(id, giftCertificateDTO.getTagNames());
 
         return transformToDTOAndLoadTags(updatedGiftCertificate);
     }
@@ -105,6 +116,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public List<GiftCertificateDTO> getCertificates(GetGiftCertificateQueryParameter giftCertificateQueryParameter) {
+        if (giftCertificateQueryParameter.isEmpty()) {
+            return getCertificates();
+        }
         GiftCertificateSQL giftCertificateRequest = GetGiftCertificateSQLBuilder.getInstance().build(giftCertificateQueryParameter);
 
         List<GiftCertificate> giftCertificateList = giftCertificateDAO.getGiftCertificates(giftCertificateRequest);
@@ -152,12 +166,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     private void createTagsIfNotFoundAndInsert(int giftID, List<String> tagNamesList) {
-        tagNamesList.forEach(tagName -> {
-            Optional<Tag> optionalTag = tagDAO.getTagByName(tagName);
-            Tag tag = optionalTag.orElseGet(() -> tagDAO.createTag(tagName));
+        if (tagNamesList != null) {
+            tagNamesList.forEach(tagName -> {
+                Optional<Tag> optionalTag = tagDAO.getTagByName(tagName);
+                Tag tag = optionalTag.orElseGet(() -> tagDAO.createTag(tagName));
 
-            tagDAO.insertGiftTag(giftID, tag.getId());
-        });
+                tagDAO.insertGiftTag(giftID, tag.getId());
+            });
+        }
     }
 
 }

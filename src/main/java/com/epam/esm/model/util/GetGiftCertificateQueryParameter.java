@@ -10,15 +10,19 @@ public class GetGiftCertificateQueryParameter {
     private SortBy sortBy;
     private SortOrientation sortOrientation;
 
+    public GetGiftCertificateQueryParameter() {
+
+    }
+
     public GetGiftCertificateQueryParameter(String tagName, String name, String description, String sortBy, String sortOrientation) {
         if (!StringUtils.isEmpty(tagName)) {
-            setDescription(description);
-        }
-        if (!StringUtils.isEmpty(name)) {
             setTagName(tagName);
         }
-        if (!StringUtils.isEmpty(description)) {
+        if (!StringUtils.isEmpty(name)) {
             setName(name);
+        }
+        if (!StringUtils.isEmpty(description)) {
+            setDescription(description);
         }
         if (!StringUtils.isEmpty(sortBy)) {
             setSortBy(sortBy);
@@ -75,4 +79,9 @@ public class GetGiftCertificateQueryParameter {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public boolean isEmpty() {
+        return name == null && description == null && tagName == null && sortBy == null && sortOrientation == null;
+    }
+
 }

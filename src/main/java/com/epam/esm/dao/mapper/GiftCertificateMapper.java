@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class GiftCertificateMapper implements RowMapper<GiftCertificate> {
+public final class GiftCertificateMapper implements RowMapper<GiftCertificate> {
 
     private final static GiftCertificateMapper instance = new GiftCertificateMapper();
 
@@ -26,7 +26,7 @@ public class GiftCertificateMapper implements RowMapper<GiftCertificate> {
         giftCertificate.setPrice(rs.getInt(ParamColumn.PRICE));
         giftCertificate.setDuration(rs.getInt(ParamColumn.DURATION));
         giftCertificate.setCreateDate(rs.getTimestamp(ParamColumn.CREATE_DATE).toInstant());
-        giftCertificate.setLastsUpdateDate(rs.getTimestamp(ParamColumn.LAST_UPDATE_DATE).toInstant());
+        giftCertificate.setLastUpdateDate(rs.getTimestamp(ParamColumn.LAST_UPDATE_DATE).toInstant());
         return giftCertificate;
     }
 

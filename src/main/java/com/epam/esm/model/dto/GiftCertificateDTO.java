@@ -17,15 +17,15 @@ public class GiftCertificateDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private LocalDateTime lastsUpdateDate;
+    private LocalDateTime lastUpdateDate;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> tagNames;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -45,7 +45,7 @@ public class GiftCertificateDTO {
         this.description = description;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
@@ -53,7 +53,7 @@ public class GiftCertificateDTO {
         this.price = price;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
@@ -69,12 +69,12 @@ public class GiftCertificateDTO {
         this.createDate = createDate;
     }
 
-    public LocalDateTime getLastsUpdateDate() {
-        return lastsUpdateDate;
+    public LocalDateTime getLastUpdateDate() {
+        return lastUpdateDate;
     }
 
-    public void setLastsUpdateDate(LocalDateTime lastsUpdateDate) {
-        this.lastsUpdateDate = lastsUpdateDate;
+    public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
     }
 
     public List<String> getTagNames() {
@@ -90,19 +90,19 @@ public class GiftCertificateDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GiftCertificateDTO that = (GiftCertificateDTO) o;
-        return id == that.id &&
-                price == that.price &&
-                duration == that.duration &&
+        return Objects.equals(id, that.id) &&
+                Objects.equals(price, that.price) &&
+                Objects.equals(duration, that.duration) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(createDate, that.createDate) &&
-                Objects.equals(lastsUpdateDate, that.lastsUpdateDate) &&
+                Objects.equals(lastUpdateDate, that.lastUpdateDate) &&
                 Objects.equals(tagNames, that.tagNames);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, price, duration, createDate, lastsUpdateDate, tagNames);
+        return Objects.hash(id, name, description, price, duration, createDate, lastUpdateDate, tagNames);
     }
 
     @Override
@@ -114,7 +114,7 @@ public class GiftCertificateDTO {
                 ", price=" + price +
                 ", duration=" + duration +
                 ", createDate=" + createDate +
-                ", lastsUpdateDate=" + lastsUpdateDate +
+                ", lastsUpdateDate=" + lastUpdateDate +
                 ", tagName=" + tagNames +
                 '}';
     }

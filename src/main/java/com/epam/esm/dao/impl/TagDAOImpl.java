@@ -28,10 +28,13 @@ public class TagDAOImpl implements TagDAO {
 
     private final static String GET_TAGS_SQL = "SELECT * FROM tag";
 
-    private final static String SELECT_BY_TAG_NAME_SQL = "SELECT * FROM tag tags " +
+    private final static String SELECT_BY_GIFT_ID_SQL = "SELECT * FROM tag tags " +
             "INNER JOIN gift_tag link ON tags.id = link.tag " +
-            "INNER JOIN gift_certificate gift ON link.gift = gift.id " +
-            "WHERE (gift.id = ?)";
+            "WHERE (link.gift = ?)";
+
+    private final static String SELECT_BY_TAG_NAME_SQL = "SELECT * FROM tag WHERE (name = ?)";
+
+    private final static int FIRST_ELEMENT_INDEX = 0;
 
     @Autowired
     public TagDAOImpl(DataSource dataSource) {
@@ -72,14 +75,11 @@ public class TagDAOImpl implements TagDAO {
 
     @Override
     public List<Tag> getTagListByGiftCertificateID(int id) {
-        return jdbcTemplate.query(SELECT_BY_TAG_NAME_SQL, new Object[]{id}, tagMapper);
+        return jdbcTemplate.query(SELECT_BY_GIFT_ID_SQL, new Object[]{id}, tagMapper);
     }
 
     @Override
     public Optional<Tag> getTagByName(String name) {
-        final String SELECT_BY_TAG_NAME_SQL = "SELECT * FROM tag WHERE (name = ?)";
-        final int FIRST_ELEMENT_INDEX = 0;
-
         List<Tag> tagList = jdbcTemplate.query(SELECT_BY_TAG_NAME_SQL,
                 new Object[]{name}, tagMapper);
 

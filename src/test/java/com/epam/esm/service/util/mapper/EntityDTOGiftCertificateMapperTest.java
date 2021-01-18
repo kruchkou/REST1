@@ -37,7 +37,7 @@ class EntityDTOGiftCertificateMapperTest {
         giftCertificate.setPrice(TEST_PRICE);
         giftCertificate.setDuration(TEST_DURATION);
         giftCertificate.setCreateDate(TEST_CREATE_DATE_INSTANT);
-        giftCertificate.setLastsUpdateDate(TEST_LAST_UPDATE_DATE_INSTANT);
+        giftCertificate.setLastUpdateDate(TEST_LAST_UPDATE_DATE_INSTANT);
 
         giftCertificateDTO.setId(TEST_ID);
         giftCertificateDTO.setName(TEST_NAME);
@@ -45,7 +45,7 @@ class EntityDTOGiftCertificateMapperTest {
         giftCertificateDTO.setPrice(TEST_PRICE);
         giftCertificateDTO.setDuration(TEST_DURATION);
         giftCertificateDTO.setCreateDate(TEST_CREATE_DATE_LOCAL_DATE_TIME);
-        giftCertificateDTO.setLastsUpdateDate(TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME);
+        giftCertificateDTO.setLastUpdateDate(TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME);
     }
 
     @Test
@@ -57,7 +57,7 @@ class EntityDTOGiftCertificateMapperTest {
         assertEquals(TEST_PRICE, testedGiftCertificate.getPrice());
         assertEquals(TEST_DURATION, testedGiftCertificate.getDuration());
         assertEquals(TEST_CREATE_DATE_INSTANT, testedGiftCertificate.getCreateDate());
-        assertEquals(TEST_LAST_UPDATE_DATE_INSTANT, testedGiftCertificate.getLastsUpdateDate());
+        assertEquals(TEST_LAST_UPDATE_DATE_INSTANT, testedGiftCertificate.getLastUpdateDate());
     }
 
     @Test
@@ -69,6 +69,6 @@ class EntityDTOGiftCertificateMapperTest {
         assertEquals(TEST_PRICE, testedGiftCertificateDTO.getPrice());
         assertEquals(TEST_DURATION, testedGiftCertificateDTO.getDuration());
         assertEquals(TEST_CREATE_DATE_LOCAL_DATE_TIME, testedGiftCertificateDTO.getCreateDate());
-        assertEquals(TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME, testedGiftCertificateDTO.getLastsUpdateDate());
+        assertEquals(TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME, testedGiftCertificateDTO.getLastUpdateDate());
     }
 }

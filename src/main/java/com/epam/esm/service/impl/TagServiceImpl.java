@@ -65,6 +65,13 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    public List<TagDTO> getTagListByGiftCertificateID(int id) {
+        List<Tag> tagList = tagDAO.getTagListByGiftCertificateID(id);
+
+        return EntityDTOTagMapper.toDTO(tagList);
+    }
+
+    @Override
     public TagDTO getTagByName(String name) {
         Optional<Tag> optionalTag = tagDAO.getTagByName(name);
 

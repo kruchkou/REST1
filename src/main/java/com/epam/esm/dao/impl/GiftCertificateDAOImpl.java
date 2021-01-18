@@ -2,7 +2,6 @@ package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.GiftCertificateDAO;
 import com.epam.esm.dao.mapper.GiftCertificateMapper;
-import com.epam.esm.dao.mapper.TagMapper;
 import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.model.util.GiftCertificateSQL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,6 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     private final JdbcTemplate jdbcTemplate;
 
     private final static GiftCertificateMapper giftCertificateMapper = GiftCertificateMapper.getInstance();
-    private final static TagMapper tagMapper = TagMapper.getInstance();
 
     private final static String SELECT_BY_NAME_OR_DESCRIPTION_SQL = "SELECT * FROM gift_certificate gift " +
             "WHERE (name REGEXP ? OR description REGEXP ?)";
@@ -41,8 +39,12 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     private final static String DELETE_SQL = "DELETE FROM gift_certificate WHERE id = ?";
 
+    private final static String DELETE_FROM_GIFT_TAG_SQL = "DELETE FROM gift_tag WHERE (gift = ?)";
+
     private final static String CREATE_SQL = "INSERT INTO gift_certificate" +
             " (name, description, price, duration, create_date, last_update_date) VALUES (?,?,?,?,?,?)";
+
+    private final static int FIRST_ELEMENT_INDEX = 0;
 
     @Autowired
     public GiftCertificateDAOImpl(DataSource dataSource) {
@@ -67,7 +69,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
             return ps;
         }, keyHolder);
 
-        int id = (int) keyHolder.getKeys().get("id");
+        int id = keyHolder.getKey().intValue();
         return getGiftCertificateByID(id).get();
     }
 
@@ -79,14 +81,17 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     }
 
     @Override
+    public void deleteLinkWithTagsByID(int id) {
+        jdbcTemplate.update(DELETE_FROM_GIFT_TAG_SQL, id);
+    }
+
+    @Override
     public void deleteGiftCertificate(int id) {
         jdbcTemplate.update(DELETE_SQL, id);
     }
 
     @Override
     public Optional<GiftCertificate> getGiftCertificateByID(int id) {
-        final int FIRST_ELEMENT_INDEX = 0;
-
         List<GiftCertificate> giftList = jdbcTemplate.query(SELECT_GIFT_BY_ID_SQL,
                 new Object[]{id}, giftCertificateMapper);
 

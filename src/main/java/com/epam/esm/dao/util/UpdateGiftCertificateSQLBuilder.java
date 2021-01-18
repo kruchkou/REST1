@@ -1,13 +1,14 @@
 package com.epam.esm.dao.util;
 
+import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.model.util.GiftCertificateSQL;
-import com.epam.esm.model.util.UpdateGiftCertificateQueryParameter;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UpdateGiftCertificateSQLBuilder {
+public final class UpdateGiftCertificateSQLBuilder {
 
     private final static UpdateGiftCertificateSQLBuilder instance = new UpdateGiftCertificateSQLBuilder();
 
@@ -27,17 +28,17 @@ public class UpdateGiftCertificateSQLBuilder {
         return instance;
     }
 
-    public GiftCertificateSQL build(UpdateGiftCertificateQueryParameter updateParameter) {
+    public GiftCertificateSQL build(GiftCertificate giftCertificate) {
         StringBuilder queryBuilder = new StringBuilder();
         List<String> conditionList = new ArrayList<>();
         List<Object> paramList = new ArrayList<>();
 
-        Integer id = updateParameter.getID();
-        String name = updateParameter.getName();
-        String description = updateParameter.getDescription();
-        Integer price = updateParameter.getPrice();
-        Integer duration = updateParameter.getDuration();
-        Instant lastUpdateDate = updateParameter.getLastUpdateDate();
+        Integer id = giftCertificate.getId();
+        String name = giftCertificate.getName();
+        String description = giftCertificate.getDescription();
+        Integer price = giftCertificate.getPrice();
+        Integer duration = giftCertificate.getDuration();
+        Instant lastUpdateDate = giftCertificate.getLastUpdateDate();
 
         if (name != null) {
             conditionList.add(ADD_NAME_SQL);
@@ -56,8 +57,9 @@ public class UpdateGiftCertificateSQLBuilder {
             paramList.add(duration);
         }
         if (lastUpdateDate != null) {
+            Timestamp currentTimestamp = Timestamp.from(lastUpdateDate);
             conditionList.add(ADD_LAST_UPDATE_DATE);
-            paramList.add(lastUpdateDate);
+            paramList.add(currentTimestamp);
         }
 
         paramList.add(id);

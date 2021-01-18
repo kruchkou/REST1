@@ -12,8 +12,10 @@ public interface TagService {
 
     TagDTO getTagByID(int id);
 
+    TagDTO getTagByName(String name);
+
     List<TagDTO> getTags();
 
-    TagDTO getTagByName(String name);
+    List<TagDTO> getTagListByGiftCertificateID(int id);
 
 }

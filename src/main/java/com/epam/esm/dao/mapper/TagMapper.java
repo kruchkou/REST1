@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TagMapper implements RowMapper<Tag> {
+public final class TagMapper implements RowMapper<Tag> {
 
     private final static TagMapper instance = new TagMapper();
 

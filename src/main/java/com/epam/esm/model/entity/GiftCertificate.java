@@ -12,7 +12,7 @@ public class GiftCertificate {
     private Integer price;
     private Integer duration;
     private Instant createDate;
-    private Instant lastsUpdateDate;
+    private Instant lastUpdateDate;
 
     private List<Tag> tagList;
 
@@ -20,7 +20,7 @@ public class GiftCertificate {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -44,7 +44,7 @@ public class GiftCertificate {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
@@ -52,7 +52,7 @@ public class GiftCertificate {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
@@ -64,12 +64,12 @@ public class GiftCertificate {
         this.createDate = createDate;
     }
 
-    public Instant getLastsUpdateDate() {
-        return lastsUpdateDate;
+    public Instant getLastUpdateDate() {
+        return lastUpdateDate;
     }
 
-    public void setLastsUpdateDate(Instant lastsUpdateDate) {
-        this.lastsUpdateDate = lastsUpdateDate;
+    public void setLastUpdateDate(Instant lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
     }
 
     public List<Tag> getTagList() {
@@ -91,13 +91,13 @@ public class GiftCertificate {
                 Objects.equals(price, that.price) &&
                 Objects.equals(duration, that.duration) &&
                 Objects.equals(createDate, that.createDate) &&
-                Objects.equals(lastsUpdateDate, that.lastsUpdateDate) &&
+                Objects.equals(lastUpdateDate, that.lastUpdateDate) &&
                 Objects.equals(tagList, that.tagList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, price, duration, createDate, lastsUpdateDate, tagList);
+        return Objects.hash(id, name, description, price, duration, createDate, lastUpdateDate, tagList);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class GiftCertificate {
                 ", price=" + price +
                 ", duration=" + duration +
                 ", createDate=" + createDate +
-                ", lastsUpdateDate=" + lastsUpdateDate +
+                ", lastsUpdateDate=" + lastUpdateDate +
                 ", tagList=" + tagList +
                 '}';
     }

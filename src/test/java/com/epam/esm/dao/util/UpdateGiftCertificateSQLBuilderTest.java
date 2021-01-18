@@ -1,7 +1,7 @@
 package com.epam.esm.dao.util;
 
+import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.model.util.GiftCertificateSQL;
-import com.epam.esm.model.util.UpdateGiftCertificateQueryParameter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,26 +25,26 @@ class UpdateGiftCertificateSQLBuilderTest {
             UpdateGiftCertificateSQLBuilder.getInstance();
 
     private Object[] correctElements;
-    UpdateGiftCertificateQueryParameter updateParameter;
+    GiftCertificate giftCertificate;
 
     @BeforeEach
     public void init() {
         correctElements = new Object[]{TEST_NAME, TEST_DESCRIPTION, TEST_PRICE, TEST_DURATION, LAST_UPDATE_INSTANT, TEST_ID};
-        updateParameter = new UpdateGiftCertificateQueryParameter();
+        giftCertificate = new GiftCertificate();
 
-        updateParameter.setID(TEST_ID);
-        updateParameter.setName(TEST_NAME);
-        updateParameter.setDescription(TEST_DESCRIPTION);
-        updateParameter.setPrice(FAKE_PRICE);
-        updateParameter.setPrice(TEST_PRICE);
-        updateParameter.setDuration(TEST_DURATION);
-        updateParameter.setLastUpdateDate(LAST_UPDATE_INSTANT);
+        giftCertificate.setId(TEST_ID);
+        giftCertificate.setName(TEST_NAME);
+        giftCertificate.setDescription(TEST_DESCRIPTION);
+        giftCertificate.setPrice(FAKE_PRICE);
+        giftCertificate.setPrice(TEST_PRICE);
+        giftCertificate.setDuration(TEST_DURATION);
+        giftCertificate.setLastUpdateDate(LAST_UPDATE_INSTANT);
     }
 
     @Test
     public void testBuildMethod() {
         GiftCertificateSQL testSQL = updateGiftCertificateQueryBuilder
-                .build(updateParameter);
+                .build(giftCertificate);
 
         assertEquals(CORRECT_SQL, testSQL.getRequest());
         assertArrayEquals(correctElements, testSQL.getParams());

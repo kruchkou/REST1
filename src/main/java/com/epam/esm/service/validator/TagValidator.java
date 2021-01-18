@@ -2,7 +2,7 @@ package com.epam.esm.service.validator;
 
 import com.epam.esm.model.dto.TagDTO;
 
-public class TagValidator {
+public final class TagValidator {
 
     private TagValidator() {
     }

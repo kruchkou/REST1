@@ -8,17 +8,17 @@ import com.epam.esm.model.util.SortOrientation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetGiftCertificateSQLBuilder {
+public final class GetGiftCertificateSQLBuilder {
 
     private final static GetGiftCertificateSQLBuilder instance = new GetGiftCertificateSQLBuilder();
 
     private final static String SPLIT_PARAM_STRING = " AND ";
 
-    private final static String SELECT_SQL = "SELECT * from gift_certificate gifts WHERE (";
+    private final static String SELECT_SQL = "SELECT * from gift_certificate gifts ";
     private final static String SELECT_WITH_TAG_NAME_SQL = "SELECT * from gift_certificate gifts " +
             "INNER JOIN gift_tag link ON gifts.id = link.gift " +
-            "INNER JOIN tag tags ON link.tag = tags.id " +
-            "WHERE (";
+            "INNER JOIN tag tags ON link.tag = tags.id ";
+    private final static String WHERE_SQL = "WHERE (";
     private final static String ADD_NAME_SQL = "gifts.name REGEXP ?";
     private final static String ADD_DESCRIPTION_SQL = "description REGEXP ?";
     private final static String ADD_TAG_NAME_PARAM = "tags.name = ?";
@@ -40,6 +40,7 @@ public class GetGiftCertificateSQLBuilder {
         StringBuilder queryBuilder = new StringBuilder();
         List<String> conditionList = new ArrayList<>();
         List<Object> params = new ArrayList<>();
+        boolean whereIsUsed = false;
 
         String name = giftCertificateQueryParameter.getName();
         String description = giftCertificateQueryParameter.getDescription();
@@ -48,6 +49,7 @@ public class GetGiftCertificateSQLBuilder {
         SortOrientation sortOrientation = giftCertificateQueryParameter.getSortOrientation();
 
         if (tagName != null) {
+            whereIsUsed = true;
             queryBuilder.append(SELECT_WITH_TAG_NAME_SQL);
             conditionList.add(ADD_TAG_NAME_PARAM);
             params.add(tagName);
@@ -56,17 +58,22 @@ public class GetGiftCertificateSQLBuilder {
         }
 
         if (name != null) {
+            whereIsUsed = true;
             conditionList.add(ADD_NAME_SQL);
             params.add(name);
         }
 
         if (description != null) {
+            whereIsUsed = true;
             conditionList.add(ADD_DESCRIPTION_SQL);
             params.add(description);
         }
 
-        queryBuilder.append(String.join(SPLIT_PARAM_STRING, conditionList));
-        queryBuilder.append(CLOSE_WHERE_SQL);
+        if (whereIsUsed) {
+            queryBuilder.append(WHERE_SQL);
+            queryBuilder.append(String.join(SPLIT_PARAM_STRING, conditionList));
+            queryBuilder.append(CLOSE_WHERE_SQL);
+        }
 
         if (sortBy != null) {
             queryBuilder.append(ORDER_BY_SQL);
@@ -78,14 +85,16 @@ public class GetGiftCertificateSQLBuilder {
             }
         }
 
-        switch (sortOrientation) {
-            case ASC: {
-                queryBuilder.append(ORDER_ORIENTATION_ASC);
-                break;
+        if (sortOrientation != null) {
+            switch (sortOrientation) {
+                case ASC: {
+                    queryBuilder.append(ORDER_ORIENTATION_ASC);
+                    break;
+                }
+                case DESC:
+                    queryBuilder.append(ORDER_ORIENTATION_DESC);
+                    break;
             }
-            case DESC:
-                queryBuilder.append(ORDER_ORIENTATION_DESC);
-                break;
         }
 
         return new GiftCertificateSQL(queryBuilder.toString(), params.toArray());

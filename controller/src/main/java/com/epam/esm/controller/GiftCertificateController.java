@@ -27,7 +27,6 @@ public class GiftCertificateController {
         this.tagService = tagService;
     }
 
-
     @GetMapping("/{id}")
     public GiftCertificateDTO getGiftCertificateByID(@PathVariable int id) {
         return giftCertificateService.getGiftCertificateByID(id);

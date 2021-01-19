@@ -3,6 +3,7 @@ package com.epam.esm.service.exception.impl;
 import com.epam.esm.service.exception.ServiceException;
 
 public class TagDataValidationException extends ServiceException {
+
     public TagDataValidationException() {
         super();
     }

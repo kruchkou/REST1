@@ -1,11 +1,11 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.dao.GiftCertificateDAO;
-import com.epam.esm.dao.TagDAO;
-import com.epam.esm.model.dto.GiftCertificateDTO;
-import com.epam.esm.model.entity.GiftCertificate;
-import com.epam.esm.model.entity.Tag;
-import com.epam.esm.model.util.GetGiftCertificateQueryParameter;
+import com.epam.esm.repository.dao.GiftCertificateDAO;
+import com.epam.esm.repository.dao.TagDAO;
+import com.epam.esm.service.model.dto.GiftCertificateDTO;
+import com.epam.esm.repository.model.entity.GiftCertificate;
+import com.epam.esm.repository.model.entity.Tag;
+import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import com.epam.esm.service.exception.impl.GiftCertificateDataValidationException;
 import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
 import com.epam.esm.service.util.mapper.EntityDTOGiftCertificateMapper;
@@ -63,7 +63,7 @@ class GiftCertificateServiceImplTest {
     @BeforeEach
     public void setUp() {
         testTag = new Tag();
-        testTag.setId(2);
+        testTag.setId(TEST_TAG_ID);
         testTag.setName(TEST_TAG_NAME);
 
         giftTagList = new ArrayList<>();

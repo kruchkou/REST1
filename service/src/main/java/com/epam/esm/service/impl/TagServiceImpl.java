@@ -1,13 +1,14 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.dao.TagDAO;
-import com.epam.esm.model.dto.TagDTO;
-import com.epam.esm.model.entity.Tag;
+import com.epam.esm.repository.dao.TagDAO;
+import com.epam.esm.repository.model.entity.Tag;
 import com.epam.esm.service.TagService;
+import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
 import com.epam.esm.service.exception.impl.TagDataValidationException;
 import com.epam.esm.service.exception.impl.TagNotFoundException;
+import com.epam.esm.service.model.dto.TagDTO;
 import com.epam.esm.service.util.mapper.EntityDTOTagMapper;
-import com.epam.esm.service.validator.TagValidator;
+import com.epam.esm.service.util.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,8 @@ public class TagServiceImpl implements TagService {
 
     private final TagDAO tagDAO;
 
+    private final static String NOT_FOUND_BY_ID_PARAMETER = "id: %d";
+    private final static String NOT_FOUND_BY_NAME_PARAMETER = "name: %s";
     private final static String NO_TAG_WITH_ID_FOUND = "No tag with id: %d found";
     private final static String NO_TAG_WITH_NAME_FOUND = "No tag with name: %s found";
     private final static String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
@@ -49,6 +52,13 @@ public class TagServiceImpl implements TagService {
     @Override
     @Transactional
     public void deleteTag(int id) {
+        if (!tagDAO.getTagByID(id).isPresent()) {
+            throw new TagNotFoundException(
+                    String.format(NO_TAG_WITH_ID_FOUND, id),
+                    String.format(ERROR_CODE_TAG_BY_ID_NOT_FOUND_FAILED, id),
+                    String.format(NOT_FOUND_BY_ID_PARAMETER, id));
+        }
+
         tagDAO.deleteTag(id);
     }
 
@@ -58,7 +68,8 @@ public class TagServiceImpl implements TagService {
 
         Tag tag = optionalTag.orElseThrow(() -> new TagNotFoundException(
                 String.format(NO_TAG_WITH_ID_FOUND, id),
-                String.format(ERROR_CODE_TAG_BY_ID_NOT_FOUND_FAILED, id)));
+                String.format(ERROR_CODE_TAG_BY_ID_NOT_FOUND_FAILED, id),
+                String.format(NOT_FOUND_BY_ID_PARAMETER, id)));
 
         return EntityDTOTagMapper.toDTO(tag);
     }
@@ -83,7 +94,8 @@ public class TagServiceImpl implements TagService {
 
         Tag tag = optionalTag.orElseThrow(() -> new TagNotFoundException(
                 String.format(NO_TAG_WITH_NAME_FOUND, name),
-                ERROR_CODE_TAG_BY_NAME_NOT_FOUND_FAILED));
+                ERROR_CODE_TAG_BY_NAME_NOT_FOUND_FAILED,
+                String.format(NOT_FOUND_BY_NAME_PARAMETER, name)));
 
         return EntityDTOTagMapper.toDTO(tag);
     }

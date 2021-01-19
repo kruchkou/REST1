@@ -1,8 +1,8 @@
 package com.epam.esm.service.util.mapper;
 
-import com.epam.esm.model.dto.GiftCertificateDTO;
-import com.epam.esm.model.entity.GiftCertificate;
-import com.epam.esm.model.entity.Tag;
+import com.epam.esm.service.model.dto.GiftCertificateDTO;
+import com.epam.esm.repository.model.entity.GiftCertificate;
+import com.epam.esm.repository.model.entity.Tag;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

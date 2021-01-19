@@ -1,8 +1,9 @@
 package com.epam.esm.service.exception.impl;
 
-import com.epam.esm.service.exception.ServiceException;
+import com.epam.esm.service.exception.NotFoundException;
 
-public class TagNotFoundException extends ServiceException {
+public class TagNotFoundException extends NotFoundException {
+
     public TagNotFoundException() {
         super();
     }
@@ -15,12 +16,20 @@ public class TagNotFoundException extends ServiceException {
         super(message, errorCode);
     }
 
+    public TagNotFoundException(String message, String errorCode, String notFoundParameter) {
+        super(message, errorCode, notFoundParameter);
+    }
+
     public TagNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
     public TagNotFoundException(String message, Throwable cause, String errorCode) {
         super(message, cause, errorCode);
+    }
+
+    public TagNotFoundException(String message, Throwable cause, String errorCode, String notFoundParameter) {
+        super(message, cause, errorCode, notFoundParameter);
     }
 
     public TagNotFoundException(Throwable cause) {
@@ -31,4 +40,7 @@ public class TagNotFoundException extends ServiceException {
         super(cause, errorCode);
     }
 
+    public TagNotFoundException(Throwable cause, String errorCode, String notFoundParameter) {
+        super(cause, errorCode, notFoundParameter);
+    }
 }

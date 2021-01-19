@@ -1,19 +1,19 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.dao.GiftCertificateDAO;
-import com.epam.esm.dao.TagDAO;
-import com.epam.esm.dao.util.GetGiftCertificateSQLBuilder;
-import com.epam.esm.dao.util.UpdateGiftCertificateSQLBuilder;
-import com.epam.esm.model.dto.GiftCertificateDTO;
-import com.epam.esm.model.entity.GiftCertificate;
-import com.epam.esm.model.entity.Tag;
-import com.epam.esm.model.util.GetGiftCertificateQueryParameter;
-import com.epam.esm.model.util.GiftCertificateSQL;
+import com.epam.esm.repository.dao.GiftCertificateDAO;
+import com.epam.esm.repository.dao.TagDAO;
+import com.epam.esm.repository.dao.util.GetGiftCertificateSQLBuilder;
+import com.epam.esm.repository.dao.util.UpdateGiftCertificateSQLBuilder;
+import com.epam.esm.repository.model.entity.GiftCertificate;
+import com.epam.esm.repository.model.entity.Tag;
+import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
+import com.epam.esm.repository.model.util.GiftCertificateSQL;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.exception.impl.GiftCertificateDataValidationException;
 import com.epam.esm.service.exception.impl.GiftCertificateNotFoundException;
+import com.epam.esm.service.model.dto.GiftCertificateDTO;
 import com.epam.esm.service.util.mapper.EntityDTOGiftCertificateMapper;
-import com.epam.esm.service.validator.GiftCertificateValidator;
+import com.epam.esm.service.util.validator.GiftCertificateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +29,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final TagDAO tagDAO;
 
     private final static String NO_GIFT_CERTIFICATE_WITH_ID_FOUND = "No certificate with id: %d found";
+    private final static String NOT_FOUND_BY_ID_PARAMETER = "id: %d";
     private final static String DATA_VALIDATION_EXCEPTION = "Data didn't passed validation";
 
     private final static String ERROR_CODE_GIFT_VALIDATION_FAILED = "0101";
@@ -46,7 +47,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         if (!giftCertificateDAO.getGiftCertificateByID(id).isPresent()) {
             throw new GiftCertificateNotFoundException(
                     String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id),
-                    String.format(ERROR_CODE_GIFT_NOT_FOUND_FAILED, id));
+                    String.format(ERROR_CODE_GIFT_NOT_FOUND_FAILED, id),
+                    String.format(NOT_FOUND_BY_ID_PARAMETER, id));
         }
 
         List<Tag> tagList = tagDAO.getTagListByGiftCertificateID(id);
@@ -63,7 +65,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
         GiftCertificate giftCertificate = optionalGiftCertificate.orElseThrow(() -> new GiftCertificateNotFoundException(
                 String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id),
-                String.format(ERROR_CODE_GIFT_NOT_FOUND_FAILED, id)));
+                String.format(ERROR_CODE_GIFT_NOT_FOUND_FAILED, id),
+                String.format(NOT_FOUND_BY_ID_PARAMETER, id)));
 
         return loadTagsAndTransformToDTO(giftCertificate);
     }
@@ -76,7 +79,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         if (!optionalGiftCertificate.isPresent()) {
             throw new GiftCertificateNotFoundException(
                     String.format(NO_GIFT_CERTIFICATE_WITH_ID_FOUND, id),
-                    String.format(ERROR_CODE_GIFT_NOT_FOUND_FAILED, id));
+                    String.format(ERROR_CODE_GIFT_NOT_FOUND_FAILED, id),
+                    String.format(NOT_FOUND_BY_ID_PARAMETER, id));
         }
 
         giftCertificateDTO.setId(id);

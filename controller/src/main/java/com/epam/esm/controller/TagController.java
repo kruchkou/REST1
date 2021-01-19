@@ -1,6 +1,6 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.model.dto.TagDTO;
+import com.epam.esm.service.model.dto.TagDTO;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("v1/tags")
+@RequestMapping(value = "v1/tags")
 public class TagController {
 
     private final TagService tagService;

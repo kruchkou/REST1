@@ -10,6 +10,7 @@ public class ServiceException extends RuntimeException {
     public ServiceException(String message) {
         super(message);
     }
+
     public ServiceException(String message, String errorCode) {
         super(message);
         this.errorCode = errorCode;

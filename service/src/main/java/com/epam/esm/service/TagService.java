@@ -1,6 +1,6 @@
 package com.epam.esm.service;
 
-import com.epam.esm.model.dto.TagDTO;
+import com.epam.esm.service.model.dto.TagDTO;
 
 import java.util.List;
 

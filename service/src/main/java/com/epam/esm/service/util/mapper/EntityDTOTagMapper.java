@@ -1,7 +1,7 @@
 package com.epam.esm.service.util.mapper;
 
-import com.epam.esm.model.dto.TagDTO;
-import com.epam.esm.model.entity.Tag;
+import com.epam.esm.service.model.dto.TagDTO;
+import com.epam.esm.repository.model.entity.Tag;
 
 import java.util.ArrayList;
 import java.util.List;

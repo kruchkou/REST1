@@ -1,10 +1,11 @@
 package com.epam.esm.service.exception.impl;
 
+import com.epam.esm.service.exception.NotFoundException;
 import com.epam.esm.service.exception.ServiceException;
 
-public class GiftCertificateNotFoundException extends ServiceException {
+public class GiftCertificateNotFoundException extends NotFoundException {
+
     public GiftCertificateNotFoundException() {
-        super();
     }
 
     public GiftCertificateNotFoundException(String message) {
@@ -15,6 +16,10 @@ public class GiftCertificateNotFoundException extends ServiceException {
         super(message, errorCode);
     }
 
+    public GiftCertificateNotFoundException(String message, String errorCode, String notFoundParameter) {
+        super(message, errorCode, notFoundParameter);
+    }
+
     public GiftCertificateNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
@@ -23,11 +28,19 @@ public class GiftCertificateNotFoundException extends ServiceException {
         super(message, cause, errorCode);
     }
 
+    public GiftCertificateNotFoundException(String message, Throwable cause, String errorCode, String notFoundParameter) {
+        super(message, cause, errorCode, notFoundParameter);
+    }
+
     public GiftCertificateNotFoundException(Throwable cause) {
         super(cause);
     }
 
     public GiftCertificateNotFoundException(Throwable cause, String errorCode) {
         super(cause, errorCode);
+    }
+
+    public GiftCertificateNotFoundException(Throwable cause, String errorCode, String notFoundParameter) {
+        super(cause, errorCode, notFoundParameter);
     }
 }

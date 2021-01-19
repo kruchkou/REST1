@@ -1,11 +1,13 @@
 package com.epam.esm.service.util.mapper;
 
-import com.epam.esm.service.model.dto.GiftCertificateDTO;
 import com.epam.esm.repository.model.entity.GiftCertificate;
+import com.epam.esm.service.model.dto.GiftCertificateDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,8 +20,8 @@ class EntityDTOGiftCertificateMapperTest {
     private final static Integer TEST_DURATION = 20;
     private final static Instant TEST_CREATE_DATE_INSTANT = Instant.now();
     private final static Instant TEST_LAST_UPDATE_DATE_INSTANT = Instant.now();
-    private final static LocalDateTime TEST_CREATE_DATE_LOCAL_DATE_TIME = LocalDateTime.ofInstant(TEST_CREATE_DATE_INSTANT,ZoneOffset.UTC);
-    private final static LocalDateTime TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME = LocalDateTime.ofInstant(TEST_LAST_UPDATE_DATE_INSTANT,ZoneOffset.UTC);
+    private final static LocalDateTime TEST_CREATE_DATE_LOCAL_DATE_TIME = LocalDateTime.ofInstant(TEST_CREATE_DATE_INSTANT, ZoneOffset.UTC);
+    private final static LocalDateTime TEST_LAST_UPDATE_DATE_LOCAL_DATE_TIME = LocalDateTime.ofInstant(TEST_LAST_UPDATE_DATE_INSTANT, ZoneOffset.UTC);
     private GiftCertificate giftCertificate;
     private GiftCertificateDTO giftCertificateDTO;
 

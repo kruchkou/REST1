@@ -4,3 +4,8 @@
 /out/
 /.idea/
 /src/com/epam/esm/main/resources/applicationContext.xml
+*.iml
+**/target/
+/repository/target/
+/controller/target/
+/service/target/

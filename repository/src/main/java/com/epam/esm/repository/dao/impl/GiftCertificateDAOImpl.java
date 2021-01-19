@@ -1,7 +1,7 @@
 package com.epam.esm.repository.dao.impl;
 
 import com.epam.esm.repository.dao.GiftCertificateDAO;
-import com.epam.esm.repository.dao.mapper.GiftCertificateMapper;
+import com.epam.esm.repository.dao.util.mapper.GiftCertificateMapper;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.util.GiftCertificateSQL;
 import org.springframework.beans.factory.annotation.Autowired;

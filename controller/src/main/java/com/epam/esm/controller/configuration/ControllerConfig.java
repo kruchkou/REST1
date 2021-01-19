@@ -24,8 +24,7 @@ public class ControllerConfig {
     private final static String DEFAULT_ENCODING = "UTF-8";
 
     @Bean
-    public LocaleResolver localeResolver()
-    {
+    public LocaleResolver localeResolver() {
         AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
         localeResolver.setDefaultLocale(Locale.US);
         return localeResolver;

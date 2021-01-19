@@ -1,4 +1,4 @@
-package com.epam.esm.repository.dao.mapper;
+package com.epam.esm.repository.dao.util.mapper;
 
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import org.springframework.jdbc.core.RowMapper;
@@ -6,6 +6,9 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class is implementation of {@link RowMapper}, that links GiftCertificate with ResultSet.
+ */
 public final class GiftCertificateMapper implements RowMapper<GiftCertificate> {
 
     private final static GiftCertificateMapper instance = new GiftCertificateMapper();
@@ -13,10 +16,23 @@ public final class GiftCertificateMapper implements RowMapper<GiftCertificate> {
     private GiftCertificateMapper() {
     }
 
+    /**
+     * Returns instance of the class (Singleton).
+     *
+     * @return Instance of {@link GiftCertificateMapper}.
+     */
     public static GiftCertificateMapper getInstance() {
         return instance;
     }
 
+    /**
+     * Links ResultSet with GiftCertificate entity
+     *
+     * @param rs     is {@link ResultSet} object from JDBC request.
+     * @param rowNum is id of the row.
+     * @return {@link GiftCertificate} entity from database.
+     * @throws SQLException when something goes wrong.
+     */
     @Override
     public GiftCertificate mapRow(ResultSet rs, int rowNum) throws SQLException {
         GiftCertificate giftCertificate = new GiftCertificate();

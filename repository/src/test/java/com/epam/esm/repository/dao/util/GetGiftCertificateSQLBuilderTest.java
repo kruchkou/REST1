@@ -41,10 +41,10 @@ class GetGiftCertificateSQLBuilderTest {
 
     @Test
     public void testBuildMethod() {
-        GetGiftCertificateQueryParameter byNameQueryParameter = prepareQueryParameter(TEST_NAME,null,null,
-                SortBy.NAME.toString(),SortOrientation.ASC.toString());
-        GetGiftCertificateQueryParameter byTagNameQueryParameter = prepareQueryParameter(null,TEST_TAG_NAME,
-                TEST_DESCRIPTION,SortBy.DATE.toString(),SortOrientation.DESC.toString());
+        GetGiftCertificateQueryParameter byNameQueryParameter = prepareQueryParameter(TEST_NAME, null, null,
+                SortBy.NAME.toString(), SortOrientation.ASC.toString());
+        GetGiftCertificateQueryParameter byTagNameQueryParameter = prepareQueryParameter(null, TEST_TAG_NAME,
+                TEST_DESCRIPTION, SortBy.DATE.toString(), SortOrientation.DESC.toString());
 
         GiftCertificateSQL byNameSQL = GetGiftCertificateSQLBuilder.getInstance().build(byNameQueryParameter);
         GiftCertificateSQL byTagNameSQL = GetGiftCertificateSQLBuilder.getInstance().build(byTagNameQueryParameter);

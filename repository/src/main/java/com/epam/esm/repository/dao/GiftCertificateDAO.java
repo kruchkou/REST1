@@ -31,7 +31,7 @@ public interface GiftCertificateDAO {
      * tagID
      *
      * @param giftID is GiftCertificate ID value.
-     * @param tagID is Tag ID value.
+     * @param tagID  is Tag ID value.
      */
     void insertGiftTag(int giftID, int tagID);
 

@@ -6,8 +6,6 @@ import com.epam.esm.repository.dao.util.UpdateGiftCertificateSQLBuilder;
 import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import com.epam.esm.repository.model.util.GiftCertificateSQL;
-import com.epam.esm.repository.model.util.SortBy;
-import com.epam.esm.repository.model.util.SortOrientation;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

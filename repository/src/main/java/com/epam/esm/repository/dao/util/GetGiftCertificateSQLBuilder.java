@@ -8,6 +8,9 @@ import com.epam.esm.repository.model.util.SortOrientation;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class is builder, that transforms parameters from GET request into SQL query and array of parameters.
+ */
 public final class GetGiftCertificateSQLBuilder {
 
     private final static GetGiftCertificateSQLBuilder instance = new GetGiftCertificateSQLBuilder();
@@ -29,13 +32,26 @@ public final class GetGiftCertificateSQLBuilder {
     private final static String ORDER_ORIENTATION_ASC = " ASC";
     private final static String ORDER_ORIENTATION_DESC = " DESC";
 
+
     private GetGiftCertificateSQLBuilder() {
     }
 
+    /**
+     * Returns instance of the class (Singleton).
+     *
+     * @return Instance of {@link GetGiftCertificateSQLBuilder}.
+     */
     public static GetGiftCertificateSQLBuilder getInstance() {
         return instance;
     }
 
+    /**
+     * Transforms parameters from request into SQL query and array of parameters.
+     *
+     * @param giftCertificateQueryParameter is {@link GetGiftCertificateQueryParameter} object with parameters from
+     *                                      request.
+     * @return {@link GiftCertificateSQL} object, that contains SQL query and array of parameters.
+     */
     public GiftCertificateSQL build(GetGiftCertificateQueryParameter giftCertificateQueryParameter) {
         StringBuilder queryBuilder = new StringBuilder();
         List<String> conditionList = new ArrayList<>();

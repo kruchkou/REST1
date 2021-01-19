@@ -1,11 +1,10 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.repository.model.entity.GiftCertificate;
-import com.epam.esm.service.model.dto.GiftCertificateDTO;
-import com.epam.esm.service.model.dto.TagDTO;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
+import com.epam.esm.service.model.dto.GiftCertificateDTO;
+import com.epam.esm.service.model.dto.TagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +17,6 @@ public class GiftCertificateController {
 
     private final GiftCertificateService giftCertificateService;
     private final TagService tagService;
-
-    private final static String EMPTY_STRING = "";
 
     @Autowired
     public GiftCertificateController(GiftCertificateService giftCertificateService, TagService tagService) {

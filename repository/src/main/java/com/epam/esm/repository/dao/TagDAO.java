@@ -5,10 +5,14 @@ import com.epam.esm.repository.model.entity.Tag;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Interface provides methods to interact with Tag data from database.
+ * Methods should connect to database and manipulate with data(save, edit, etc.).
+ */
 public interface TagDAO {
 
     /**
-     * Connects to database and deletes Tag with provided ID
+     * Connects to database and deletes Tag with provided ID.
      *
      * @param id is Tag ID value.
      */
@@ -18,7 +22,7 @@ public interface TagDAO {
      * Connects to database and add an new Tag.
      *
      * @param name is Tag name value
-     * @return Created {@link Tag} entity from database
+     * @return Created {@link Tag} entity from database.
      */
     Tag createTag(String name);
 
@@ -47,7 +51,7 @@ public interface TagDAO {
     Optional<Tag> getTagByName(String name);
 
     /**
-     * Connects to database and returns list of Tags linked to GiftCertificate in gift_tag table
+     * Connects to database and returns list of Tags linked to GiftCertificate in gift_tag table.
      *
      * @param id is GiftCertificate
      * @return List of matched {@link Tag} entities from database.

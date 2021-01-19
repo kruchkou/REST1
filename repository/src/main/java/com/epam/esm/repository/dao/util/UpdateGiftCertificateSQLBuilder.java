@@ -8,6 +8,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class is builder, that transforms parameters from UPDATE request into SQL query and array of parameters.
+ */
 public final class UpdateGiftCertificateSQLBuilder {
 
     private final static UpdateGiftCertificateSQLBuilder instance = new UpdateGiftCertificateSQLBuilder();
@@ -24,10 +27,23 @@ public final class UpdateGiftCertificateSQLBuilder {
     private UpdateGiftCertificateSQLBuilder() {
     }
 
+    /**
+     * Returns instance of the class (Singleton).
+     *
+     * @return Instance of {@link UpdateGiftCertificateSQLBuilder}.
+     */
     public static UpdateGiftCertificateSQLBuilder getInstance() {
         return instance;
     }
 
+    /**
+     * Transforms parameters from request into SQL query and array of parameters.
+     * Sets new update date if wasn't provided
+     *
+     * @param giftCertificate is {@link GiftCertificate} object with parameters from
+     *                        request.
+     * @return {@link GiftCertificateSQL} object, that contains SQL query and array of parameters.
+     */
     public GiftCertificateSQL build(GiftCertificate giftCertificate) {
         StringBuilder queryBuilder = new StringBuilder();
         List<String> conditionList = new ArrayList<>();
@@ -62,7 +78,7 @@ public final class UpdateGiftCertificateSQLBuilder {
                 Timestamp.from(Instant.now()) : Timestamp.from(lastUpdateDate);
 
         conditionList.add(ADD_LAST_UPDATE_DATE);
-            paramList.add(currentTimestamp);
+        paramList.add(currentTimestamp);
 
         paramList.add(id);
 

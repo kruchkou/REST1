@@ -39,8 +39,8 @@ class GiftCertificateDAOImplTest {
     private EmbeddedDatabase embeddedDatabase;
     private GiftCertificateDAO giftCertificateDAO;
 
-    private GiftCertificateSQL prepareGiftCertificateSQL(String name, String tagName, String description, SortBy sortBy,
-                                                         SortOrientation sortOrientation) {
+    private GiftCertificateSQL prepareGiftCertificateSQL(String name, String tagName, String description, String sortBy,
+                                                         String sortOrientation) {
         GetGiftCertificateQueryParameter giftParameter = new GetGiftCertificateQueryParameter();
 
         giftParameter.setName(name);

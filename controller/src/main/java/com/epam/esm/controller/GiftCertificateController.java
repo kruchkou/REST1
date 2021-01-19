@@ -1,5 +1,6 @@
 package com.epam.esm.controller;
 
+import com.epam.esm.repository.model.entity.GiftCertificate;
 import com.epam.esm.service.model.dto.GiftCertificateDTO;
 import com.epam.esm.service.model.dto.TagDTO;
 import com.epam.esm.repository.model.util.GetGiftCertificateQueryParameter;
@@ -38,17 +39,8 @@ public class GiftCertificateController {
     }
 
     @GetMapping
-    public List<GiftCertificateDTO> getGiftCertificateByAllParams(
-            @RequestParam(value = "tagName", defaultValue = EMPTY_STRING) String tagName,
-            @RequestParam(value = "name", defaultValue = EMPTY_STRING) String name,
-            @RequestParam(value = "description", defaultValue = EMPTY_STRING) String description,
-            @RequestParam(value = "sortBy", defaultValue = EMPTY_STRING) String sortBy,
-            @RequestParam(value = "sortOrientation", defaultValue = EMPTY_STRING) String sortOrientation) {
-
-        GetGiftCertificateQueryParameter giftCertificateQueryParameter = new GetGiftCertificateQueryParameter(
-                tagName, name, description, sortBy, sortOrientation);
-
-        return giftCertificateService.getCertificates(giftCertificateQueryParameter);
+    public List<GiftCertificateDTO> getGiftCertificateByAllParams(GetGiftCertificateQueryParameter parameter) {
+        return giftCertificateService.getCertificates(parameter);
     }
 
     @PostMapping

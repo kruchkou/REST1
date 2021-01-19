@@ -44,20 +44,12 @@ public class GetGiftCertificateQueryParameter {
         return sortBy;
     }
 
-    public void setSortBy(SortBy sortBy) {
-        this.sortBy = sortBy;
-    }
-
     public void setSortBy(String sortBy) {
         this.sortBy = SortBy.valueOf(sortBy.toUpperCase());
     }
 
     public SortOrientation getSortOrientation() {
         return sortOrientation;
-    }
-
-    public void setSortOrientation(SortOrientation sortOrientation) {
-        this.sortOrientation = sortOrientation;
     }
 
     public void setSortOrientation(String sortOrientation) {
